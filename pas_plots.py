@@ -16,6 +16,15 @@ ROOT.gROOT.ProcessLine('.x tdrStyle.C')
 postfit_src = os.path.join(os.environ['CMSSW_BASE'],
                            'src/HiggsAnalysis/HiggsToTauTau/test/',
                            'root_postfit')
+postfit_src_wh_had = os.path.join(os.environ['CMSSW_BASE'],
+                           'src/HiggsAnalysis/HiggsToTauTau/test/',
+                           'root_postfit_wh_had')
+postfit_src_wh = os.path.join(os.environ['CMSSW_BASE'],
+                           'src/HiggsAnalysis/HiggsToTauTau/test/',
+                           'root_postfit_wh')
+postfit_src_zh = os.path.join(os.environ['CMSSW_BASE'],
+                           'src/HiggsAnalysis/HiggsToTauTau/test/',
+                           'root_postfit_zh')
 
 is_blind=True
 
@@ -140,22 +149,23 @@ def get_combined_histogram(histograms, directories, files, title=None,
     for file in files:
         for path in directories:
             for histogram in histograms:
+		   print path,histogram
 		   #if os.path.isfile(path + '/' + histogram):
                    th1 = file.Get(path + '/' + histogram)
                    if output is None:
                        output = th1.Clone()
                    else:
                        output.Add(th1)
-                   if histogram=="data_obs":
-                        if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
-                            for i in range(6,9):#partial blinding
-                                 output.SetBinContent(i,-100)
-                        if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
-                            for i in range(4,7):
-                                 output.SetBinContent(i,-100)
-                        if path=="ett" or directories=="mtt":
-                            for i in range(4,7):
-                                 output.SetBinContent(i,-100)
+                   #if histogram=="data_obs":
+                   #     if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
+                   #         for i in range(6,9):#partial blinding
+                   #              output.SetBinContent(i,-100)
+                   #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
+                   #         for i in range(4,7):
+                   #              output.SetBinContent(i,-100)
+                   #     if path=="ett" or directories=="mtt":
+                   #         for i in range(4,7):
+                   #              output.SetBinContent(i,-100)
     if scale is not None:
         output.Scale(scale)
     if title is not None:
@@ -181,6 +191,10 @@ if __name__ == "__main__":
                         choices=['7TeV', '8TeV', 'all'],
                         help="Which data taking period")
 
+    parser.add_argument('--MLfit', default="all",
+                        choices=['channel', 'all'],
+                        help="Which fit")
+
     args = parser.parse_args()
 
     prefit_7TeV_file = ROOT.TFile.Open(
@@ -188,19 +202,62 @@ if __name__ == "__main__":
     prefit_8TeV_file = ROOT.TFile.Open(
         "limits/cmb/common/vhtt.input_8TeV.root")
 
-    postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
-    postfit_8TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_8TeV.root")
+    #postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
+    #postfit_8TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_8TeV.root")
+    postfit_7TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_7TeV.root")
+    postfit_8TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_8TeV.root")
+    postfit_7TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_7TeV.root")
+    postfit_8TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_8TeV.root")
+    postfit_7TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_7TeV.root")
+    postfit_8TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_8TeV.root")
 
-    files_to_use_map = {
+    files_to_use_map_zh = {
         (True, '7TeV'): [prefit_7TeV_file],
         (True, '8TeV'): [prefit_8TeV_file],
         (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
-        (False, '7TeV'): [postfit_7TeV_file],
-        (False, '8TeV'): [postfit_8TeV_file],
-        (False, 'all'): [postfit_8TeV_file, postfit_7TeV_file],
+        (False, '7TeV'): [postfit_7TeV_file_zh],
+        (False, '8TeV'): [postfit_8TeV_file_zh],
+        (False, 'all'): [postfit_8TeV_file_zh, postfit_7TeV_file_zh],
     }
 
-    files_to_use = files_to_use_map[(args.prefit, args.period)]
+    files_to_use_map_wh = {
+        (True, '7TeV'): [prefit_7TeV_file],
+        (True, '8TeV'): [prefit_8TeV_file],
+        (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+        (False, '7TeV'): [postfit_7TeV_file_wh],
+        (False, '8TeV'): [postfit_8TeV_file_wh],
+        (False, 'all'): [postfit_8TeV_file_wh, postfit_7TeV_file_wh],
+    }
+
+    files_to_use_map_wh_had = {
+        (True, '7TeV'): [prefit_7TeV_file],
+        (True, '8TeV'): [prefit_8TeV_file],
+        (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+        (False, '7TeV'): [postfit_7TeV_file_wh_had],
+        (False, '8TeV'): [postfit_8TeV_file_wh_had],
+        (False, 'all'): [postfit_8TeV_file_wh_had, postfit_7TeV_file_wh_had],
+    }
+    print args.prefit
+
+    files_to_use_zh = files_to_use_map_zh[(args.prefit, args.period)]
+    files_to_use_wh_had = files_to_use_map_wh_had[(args.prefit, args.period)]
+    files_to_use_wh = files_to_use_map_wh[(args.prefit, args.period)]
+
+    if args.MLfit=="all":
+        postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
+        postfit_8TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_8TeV.root")
+        files_to_use_map = {
+                (True, '7TeV'): [prefit_7TeV_file],
+                (True, '8TeV'): [prefit_8TeV_file],
+                (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+                (False, '7TeV'): [postfit_7TeV_file],
+                (False, '8TeV'): [postfit_8TeV_file],
+                (False, 'all'): [postfit_8TeV_file, postfit_7TeV_file],
+        }
+        files_to_use_zh = files_to_use_map[(args.prefit, args.period)]
+        files_to_use_wh_had = files_to_use_map[(args.prefit, args.period)]
+        files_to_use_wh = files_to_use_map[(args.prefit, args.period)]
+
 
     # Get all our histograms
     histograms = {}
@@ -211,33 +268,27 @@ if __name__ == "__main__":
     llt_channels_flip = ['eetCatLow','eetCatHigh']
 
     histograms['llt']['wz'] = get_combined_histogram(
-        'wz', llt_channels, files_to_use, title='WZ',
+        'wz', llt_channels, files_to_use_wh, title='WZ',
         style='wz'
     )
-
     histograms['llt']['zz'] = get_combined_histogram(
-        'zz', llt_channels, files_to_use, title='ZZ',
+        'zz', llt_channels, files_to_use_wh, title='ZZ',
         style='zz'
     )
-
     histograms['llt']['fakes'] = get_combined_histogram(
-        'fakes', llt_channels, files_to_use, title='Reducible bkg.', style='fakes'
+        'fakes', llt_channels, files_to_use_wh, title='Reducible bkg.', style='fakes'
     )
-
     histograms['llt']['charge_fakes'] = get_combined_histogram(
-        'charge_fakes', llt_channels_flip, files_to_use, title='Reducible bkg. charge flip', style='charge_fakes'
+        'charge_fakes', llt_channels_flip, files_to_use_wh, title='Reducible bkg. charge flip', style='charge_fakes'
     )
-
     histograms['llt']['signal'] = get_combined_histogram(
-        'WH125', llt_channels, files_to_use,
+        'WH125', llt_channels, files_to_use_wh,
         title='m_{H}=125 GeV', style='signal',
     )
-
     histograms['llt']['data'] = get_combined_histogram(
-        'data_obs', llt_channels, files_to_use,
+        'data_obs', llt_channels, files_to_use_wh,
         title='data', style='data'
     )
-
     def make_legend():
         output = ROOT.TLegend(0.55, 0.65, 0.90, 0.90, "", "brNDC")
         output.SetLineWidth(0)
@@ -245,7 +296,6 @@ if __name__ == "__main__":
         output.SetFillStyle(0)
         output.SetBorderSize(0)
         return output
-
     histograms['llt']['stack'] = ROOT.THStack("llt_stack", "llt_stack")
     histograms['llt']['stack'].Add(histograms['llt']['zz'], 'hist')
     histograms['llt']['stack'].Add(histograms['llt']['charge_fakes'], 'hist')
@@ -255,13 +305,14 @@ if __name__ == "__main__":
     errorLLT=histograms['llt']['zz'].Clone()
     errorLLT.SetFillStyle(3013)
     errorLLT.Add(histograms['llt']['fakes'])
-    errorLLT.Add(histograms['llt']['charge_fakes'])
+    #errorLLT.Add(histograms['llt']['charge_fakes'])
     errorLLT.Add(histograms['llt']['wz'])
     errorLLT.SetMarkerSize(0)
     errorLLT.SetFillColor(1)
     errorLLT.SetLineWidth(1)
 
     histograms['llt']['stack'].Add(histograms['llt']['signal'], 'hist')
+    print "signal"
 
     histograms['llt']['legend'] = make_legend()
     histograms['llt']['legend'].AddEntry(histograms['llt']['signal'],
@@ -289,22 +340,22 @@ if __name__ == "__main__":
     #)
 
     histograms['zh']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], zh_channels, files_to_use, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], zh_channels, files_to_use_zh, title='ZZ',
         style='zz'
     )
 
     histograms['zh']['fakes'] = get_combined_histogram(
-        'Zjets', zh_channels, files_to_use, title='Reducible bkg.',
+        'Zjets', zh_channels, files_to_use_zh, title='Reducible bkg.',
         style='fakes'
     )
 
     histograms['zh']['signal'] = get_combined_histogram(
-        'ZH_htt125', zh_channels, files_to_use,
+        'ZH_htt125', zh_channels, files_to_use_zh,
         title='m_{H}=125 GeV', style='signal',
     )
 
     histograms['zh']['data'] = get_combined_histogram(
-        'data_obs', zh_channels, files_to_use,
+        'data_obs', zh_channels, files_to_use_zh,
         title='data', style='data',
     )
 
@@ -312,14 +363,14 @@ if __name__ == "__main__":
     histograms['zh']['stack'].Add(histograms['zh']['zz'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['fakes'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['signal'], 'hist')
-
+    
     errorZH=histograms['zh']['zz'].Clone()
     errorZH.SetFillStyle(3013)
     errorZH.Add(histograms['zh']['fakes'])
     errorZH.SetMarkerSize(0) 
     errorZH.SetFillColor(1)
     errorZH.SetLineWidth(1)
-
+    
     histograms['zh']['legend'] = make_legend()
     histograms['zh']['legend'].AddEntry(histograms['zh']['signal'],
                                         "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
@@ -335,25 +386,25 @@ if __name__ == "__main__":
     ltt_channels = ['ett', 'mtt']
 
     histograms['ltt']['wz'] = get_combined_histogram(
-        'wz', ltt_channels, files_to_use, title='WZ',
+        'wz', ltt_channels, files_to_use_wh_had, title='WZ',
         style='wz',
     )
 
     histograms['ltt']['zz'] = get_combined_histogram(
-        'zz', ltt_channels, files_to_use, title='ZZ',
+        'zz', ltt_channels, files_to_use_wh_had, title='ZZ',
         style='zz',)
 
     histograms['ltt']['fakes'] = get_combined_histogram(
-        'fakes', ltt_channels, files_to_use, title='Reducible bkg.',
+        'fakes', ltt_channels, files_to_use_wh_had, title='Reducible bkg.',
         style='fakes',
     )
 
     histograms['ltt']['signal'] = get_combined_histogram(
-        ['WH_htt125'], ltt_channels, files_to_use,
+        ['WH_htt125'], ltt_channels, files_to_use_wh_had,
         title='m_{H}=125 GeV', style='signal')
 
     histograms['ltt']['data'] = get_combined_histogram(
-        'data_obs', ltt_channels, files_to_use,
+        'data_obs', ltt_channels, files_to_use_wh_had,
         title='data', style='data')
 
     histograms['ltt']['stack'] = ROOT.THStack("ltt_stack", "ltt_stack")
@@ -361,6 +412,7 @@ if __name__ == "__main__":
     histograms['ltt']['stack'].Add(histograms['ltt']['fakes'], "hist")
     histograms['ltt']['stack'].Add(histograms['ltt']['wz'], "hist")
     histograms['ltt']['stack'].Add(histograms['ltt']['signal'], "hist")
+
 
     errorLTT=histograms['ltt']['zz'].Clone()
     errorLTT.SetFillStyle(3013)
@@ -400,9 +452,10 @@ if __name__ == "__main__":
            histograms[channel]['stack'].GetXaxis().SetTitle("#bf{m_{vis} [GeV]}")
 
 
-    plot_suffix = "_%s_%s.pdf" % (
+    plot_suffix = "_%s_%s_%s.pdf" % (
         'prefit' if args.prefit else 'postfit',
-        args.period
+        args.period,
+	'FitByChannel' if args.MLfit=="channel" else 'FitAllChannels'
     )
 
     catllt      = ROOT.TPaveText(0.20, 0.71+0.061, 0.32, 0.71+0.161, "NDC");
@@ -444,9 +497,7 @@ if __name__ == "__main__":
 
     histograms['llt']['stack'].Draw()
     errorLLT.Draw("e2same");
-    #if not is_blind:
-    #	histograms['llt']['poisson'].Draw('pe same')
-    histograms['llt']['poisson'].Draw('pe same')
+    #histograms['llt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['llt']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -460,9 +511,7 @@ if __name__ == "__main__":
     histograms['zh']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['zh']['poisson'].SetLineWidth(2)
     histograms['zh']['poisson'].SetMarkerSize(2)
-    if not is_blind:
-    	histograms['zh']['poisson'].Draw('pe same')
-    histograms['zh']['poisson'].Draw('pe same')
+    #histograms['zh']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['zh']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -471,10 +520,7 @@ if __name__ == "__main__":
 
     histograms['ltt']['stack'].Draw()
     errorLTT.Draw("e2same")
-    #is_blind = os.environ.get('blind', 'NO') == 'YES'
-    if not is_blind:
-    	 histograms['ltt']['poisson'].Draw('pe same')
-    histograms['ltt']['poisson'].Draw('pe same')
+    #histograms['ltt']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['ltt']['legend'].Draw()
     limiBlurb=add_cms_blurb(sqrts, int_lumi)
