@@ -447,8 +447,8 @@ massplots: plots/.mass_timestamp
 $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	# make a copy of the directory so we can mess with them.
 	rm -fr $(HTT_TEST)/root_postfit_zh
-	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_zh
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_zh/125
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_zh
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_zh.txt
 	# apply all the pulls to the shapes
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_3_8TeV.txt \
@@ -476,8 +476,8 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	  --bins eett_zh mmtt_zh \
 	  --verbose
 	rm -fr $(HTT_TEST)/root_postfit_wh_had
-	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh_had.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_7_8TeV.txt \
 	  --bins mtt --verbose
@@ -488,8 +488,8 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_8_7TeV.txt \
 	  --bins ett --verbose
 	rm -fr $(HTT_TEST)/root_postfit_wh
+	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh/125
 	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh
-	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_0_8TeV.txt \
 	  --bins mmtCatHigh mmtCatLow \
