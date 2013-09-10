@@ -38,17 +38,20 @@ important commands are:
 ```shell
 cd HIG-13-004
 
-# Run the post fit and make all the final mass distribution plots
+# Run the post fit and make all the final mass distribution plots (1 ML fit for all channels together)
 make massplots
-# Compute all the limits
+# Or run the post fit and make all the final mass distribution plots (1 ML fit for each channel -> 3 ML fits)
+make massplots_cat
+
+# Compute all the limits (ZH, LLT, LTT, cmb + each sub-channel/category)
 make limits
 # Plot the limits (they show up in limits/*pdf)
 make plotlimits
 
-# Compute all the significances
+# Compute all the significances (ZH, LLT, LTT, cmb)
 make significance
 # Plot the significances (they show up in limits/*pdf)
-make plotsignificance
+make plotsignificances
 
 # Make vh_table.tex for the PAS
 make plots/vh_table.tex
