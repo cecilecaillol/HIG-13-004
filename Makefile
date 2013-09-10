@@ -16,7 +16,7 @@
 # plotlimits: make limit plots
 #
 # plots/vh_table.tex: generate tex table
-
+#
 # all: do everything!
 
 # Working directory
@@ -30,7 +30,7 @@ SETUPBBB=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb
 SETUPBBB2=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb2
 HTT_TEST=$(BASE)/HiggsAnalysis/HiggsToTauTau/test
 
-# where the limit directory lives (in HIG-12-053) 
+# where the limit directory lives 
 LIMITDIR=$(WD)/limits
 
 # where the raw generated cards are generated.
@@ -153,7 +153,7 @@ $(LIMITDIR)/.timestamp:  $(CARDS)/.ltt7_timestamp $(CARDS)/.ltt8_timestamp\
   $(CARDS)/.zh8_timestamp\
   $(CARDS)/.llt8_timestamp
 	rm -rf $(LIMITDIR)
-	cd $(BASE) && setup-htt.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && touch $@
+	cd $(BASE) && $(WD)/setup_htt_channels.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && setup-htt.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && touch $@
 
 limitdir: $(LIMITDIR)/.timestamp
 
@@ -212,7 +212,22 @@ $(LIMITDIR)/.computed: $(LIMITDIR)/.timestamp
 	./compute_limits.sh vhtt_wh $(NPROCS)
 	touch $@
 
-limits: $(LIMITDIR)/.computed
+$(LIMITDIR)/.chan_computed: $(LIMITDIR)/.timestamp
+	echo "Computing ZH combined limits"
+	./compute_limits.sh llem $(NPROCS)
+	./compute_limits.sh llmt $(NPROCS)
+	./compute_limits.sh llet $(NPROCS)
+	./compute_limits.sh lltt $(NPROCS)
+	echo "Computing LTT limits"
+	./compute_limits.sh mtt $(NPROCS)
+	./compute_limits.sh ett $(NPROCS)
+	echo "Computing LLT limits"
+	./compute_limits.sh mmt $(NPROCS)
+	./compute_limits.sh emt $(NPROCS)
+	./compute_limits.sh eet $(NPROCS)
+	touch $@
+
+limits: $(LIMITDIR)/.computed $(LIMITDIR)/.chan_computed
 
 ################################################################################
 #####  Computing the significances #############################################
@@ -278,7 +293,29 @@ plots/.limits_timestamp: $(LIMITDIR)/.plot_timestamp
 	#cp $(LIMITDIR)/singleLimits_observed_sm.pdf plots/obs_limit_breakdown.pdf
 	touch $@
 
-plotlimits: plots/.limits_timestamp
+$(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
+	rm -f $@
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llem/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llmt/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llet/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py eet/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mtt/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ett/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
+	rm -f $(LIMITDIR)/limits_limit.root 
+	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*_limit.root
+	touch $@
+
+plots/.chan_limits_timestamp: $(LIMITDIR)/.chan_plot_timestamp
+	mkdir -p plots
+	cp $(LIMITDIR)/*limit.pdf plots/
+	cp $(LIMITDIR)/*limit.tex plots/
+	touch $@
+
+plotlimits: plots/.limits_timestamp plots/.chan_limits_timestamp
 
 ################################################################################
 #####  Plotting the significances ##############################################
@@ -319,6 +356,7 @@ plotsignificances: plots/.significances_timestamp
 # ML fit and copy the 125 combined mass point into the postfit zone
 $(HTT_TEST)/.fit_timestamp: $(LIMITDIR)/.timestamp
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/cmb/125 && touch $@
+	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_vh.txt
 
 # Make .root files with the applied pulls
 $(HTT_TEST)/root_postfit/.timestamp: $(HTT_TEST)/.fit_timestamp
@@ -383,20 +421,119 @@ plots/.mass_timestamp: $(HTT_TEST)/root_postfit/.timestamp pas_plots.py
 	rm -rf plots
 	mkdir -p plots
 	#python pas_plots.py 
-	python pas_plots.py --prefit --period 7TeV
-	python pas_plots.py --prefit --period 8TeV
-	python pas_plots.py --prefit --period all
-	python pas_plots.py --period 7TeV
-	python pas_plots.py --period 8TeV
-	python pas_plots.py --period all
+	python pas_plots.py --prefit --period 7TeV --MLfit all
+	python pas_plots.py --prefit --period 8TeV --MLfit all
+	python pas_plots.py --prefit --period all --MLfit all
+	python pas_plots.py --period 7TeV --MLfit all
+	python pas_plots.py --period 8TeV --MLfit all
+	python pas_plots.py --period all --MLfit all
+	python pas_plots_channels.py --prefit --period 7TeV --MLfit all
+	python pas_plots_channels.py --prefit --period 8TeV --MLfit all
+	python pas_plots_channels.py --prefit --period all --MLfit all
+	python pas_plots_channels.py --period 7TeV --MLfit all
+	python pas_plots_channels.py --period 8TeV --MLfit all
+	python pas_plots_channels.py --period all --MLfit all
 	touch $@
 
 postfit: $(HTT_TEST)/root_postfit/.timestamp
 
 massplots: plots/.mass_timestamp
 
+#################################################################################################################
+#####  Making the post fit shape files for the nice plots  (different fit for each category #####################
+#################################################################################################################
+
+# Make .root files with the applied pulls
+$(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
+	# make a copy of the directory so we can mess with them.
+	rm -fr $(HTT_TEST)/root_postfit_zh
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_zh
+	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_zh/125
+	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_zh.txt
+	# apply all the pulls to the shapes
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_3_8TeV.txt \
+	  --bins eeem_zh mmme_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_4_8TeV.txt \
+	  --bins eemt_zh mmmt_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_5_8TeV.txt \
+	  --bins eeet_zh mmet_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_6_8TeV.txt \
+	  --bins eett_zh mmtt_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_3_7TeV.txt \
+	  --bins eeem_zh mmme_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_4_7TeV.txt \
+	  --bins eemt_zh mmmt_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_5_7TeV.txt \
+	  --bins eeet_zh mmet_zh \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_6_7TeV.txt \
+	  --bins eett_zh mmtt_zh \
+	  --verbose
+	rm -fr $(HTT_TEST)/root_postfit_wh_had
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
+	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
+	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh_had.txt
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_7_8TeV.txt \
+	  --bins mtt --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_8_8TeV.txt \
+	  --bins ett --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_7_7TeV.txt \
+	  --bins mtt --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_8_7TeV.txt \
+	  --bins ett --verbose
+	rm -fr $(HTT_TEST)/root_postfit_wh
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh
+	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
+	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh.txt
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_0_8TeV.txt \
+	  --bins mmtCatHigh mmtCatLow \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_1_8TeV.txt \
+	  --bins emtCatHigh emtCatLow \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_2_8TeV.txt \
+	  --bins eetCatHigh eetCatLow \
+	  --verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_0_7TeV.txt \
+	--bins mmtCatHigh mmtCatLow \
+	--verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_1_7TeV.txt \
+	  --bins emtCatHigh emtCatLow \
+	--verbose
+	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_2_7TeV.txt \
+	  --bins eetCatHigh eetCatLow \
+	  --verbose
+	# all done
+	touch $@
+
+plots/.mass_cat_timestamp: $(HTT_TEST)/root_postfit_zh/.cat_timestamp pas_plots.py
+	rm -rf plots
+	mkdir -p plots
+	python pas_plots.py --prefit --period 7TeV --MLfit channel
+	python pas_plots.py --prefit --period 8TeV --MLfit channel
+	python pas_plots.py --prefit --period all --MLfit channel
+	python pas_plots.py --period 7TeV --MLfit channel
+	python pas_plots.py --period 8TeV --MLfit channel 
+	python pas_plots.py --period all --MLfit channel
+	python pas_plots_channels.py --prefit --period 7TeV --MLfit channel
+	python pas_plots_channels.py --prefit --period 8TeV --MLfit channel
+	python pas_plots_channels.py --prefit --period all --MLfit channel
+	python pas_plots_channels.py --period 7TeV --MLfit channel
+	python pas_plots_channels.py --period 8TeV --MLfit channel 
+	python pas_plots_channels.py --period all --MLfit channel
+	touch $@
+
+massplots_cat: plots/.mass_cat_timestamp
+
+
 ################################################################################
-#####  Making the yield tablespe files for the nice plots ######################
+#####  Making the yield table files for the nice plots ######################
 ################################################################################
 
 vh_table.tex: megacard_125.txt make_yields_table.py
@@ -414,4 +551,4 @@ clean:
 	rm -rf $(LIMITDIR)
 	rm -rf $(SETUP)/*.root
 
-.PHONY: cards zh ltt llt limitdir pulls postfit massplots limits significance comparemacro plotlimits plotsignificances clean
+.PHONY: cards zh ltt llt limitdir pulls postfit massplots massplots_cat limits significance comparemacro plotlimits plotsignificances clean
