@@ -113,6 +113,12 @@ _styles = {
         'fillstyle': 1001,
         'linewidth': 3,
     },
+    "hww": {
+        'fillstyle': 1001,
+        'fillcolor': ROOT.EColor.kGreen + 3,
+        'linecolor': ROOT.EColor.kBlack,
+        'linewidth': 3,
+    },
     "signal": {
         'fillcolor': 0,
         'fillstyle': 0,
@@ -307,6 +313,11 @@ if __name__ == "__main__":
         title='m_{H}=125 GeV', style='signal',
     )
 
+    histograms['mmt']['hww'] = get_combined_histogram(
+        'WH_hww125', mmt_channels, files_to_use_wh,
+        title='m_{H}=125 GeV', style='hww',
+    )
+
     histograms['mmt']['data'] = get_combined_histogram(
         'data_obs', mmt_channels, files_to_use_wh,
         title='data', style='data'
@@ -321,13 +332,15 @@ if __name__ == "__main__":
         return output
 
     histograms['mmt']['stack'] = ROOT.THStack("mmt_stack", "mmt_stack")
-    histograms['mmt']['stack'].Add(histograms['mmt']['zz'], 'hist')
     histograms['mmt']['stack'].Add(histograms['mmt']['fakes'], 'hist')
+    histograms['mmt']['stack'].Add(histograms['mmt']['zz'], 'hist')
     histograms['mmt']['stack'].Add(histograms['mmt']['wz'], 'hist')
+    histograms['mmt']['stack'].Add(histograms['mmt']['hww'], 'hist')
 
     errorMMT=histograms['mmt']['zz'].Clone()
     errorMMT.SetFillStyle(3013)
     errorMMT.Add(histograms['mmt']['fakes'])
+    errorMMT.Add(histograms['mmt']['hww'])
     errorMMT.Add(histograms['mmt']['wz'])
     errorMMT.SetMarkerSize(0)
     errorMMT.SetFillColor(1)
@@ -340,11 +353,13 @@ if __name__ == "__main__":
                                          "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
     histograms['mmt']['legend'].AddEntry(histograms['mmt']['data'],
                                          "#bf{observed}", "lp")
+    histograms['mmt']['legend'].AddEntry(histograms['mmt']['hww'], "#bf{VH(125 GeV)#rightarrow VWW}", "f")
     histograms['mmt']['legend'].AddEntry(histograms['mmt']['wz'], "#bf{WZ}", "f")
+    histograms['mmt']['legend'].AddEntry(histograms['mmt']['zz'], "#bf{ZZ}", "f")
     histograms['mmt']['legend'].AddEntry(histograms['mmt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['mmt']['legend'].AddEntry(histograms['mmt']['zz'], "#bf{ZZ}", "f")
-    histograms['mmt']['legend'].AddEntry(errorMMT, "#bf{bkg. uncertainty}", "f")
+    if args.prefit==False:
+       histograms['mmt']['legend'].AddEntry(errorMMT, "#bf{bkg. uncertainty}", "f")
 
     # EMT
     histograms['emt'] = {}
@@ -369,20 +384,27 @@ if __name__ == "__main__":
         title='m_{H}=125 GeV', style='signal',
     )
 
+    histograms['emt']['hww'] = get_combined_histogram(
+        'WH_hww125', emt_channels, files_to_use_wh,
+        title='m_{H}=125 GeV', style='hww',
+    )
+
     histograms['emt']['data'] = get_combined_histogram(
         'data_obs', emt_channels, files_to_use_wh,
         title='data', style='data'
     )
 
     histograms['emt']['stack'] = ROOT.THStack("emt_stack", "emt_stack")
-    histograms['emt']['stack'].Add(histograms['emt']['zz'], 'hist')
     histograms['emt']['stack'].Add(histograms['emt']['fakes'], 'hist')
+    histograms['emt']['stack'].Add(histograms['emt']['zz'], 'hist')
     histograms['emt']['stack'].Add(histograms['emt']['wz'], 'hist')
+    histograms['emt']['stack'].Add(histograms['emt']['hww'], 'hist')
 
     errorEMT=histograms['emt']['zz'].Clone()
     errorEMT.SetFillStyle(3013)
     errorEMT.Add(histograms['emt']['fakes'])
     errorEMT.Add(histograms['emt']['wz'])
+    errorEMT.Add(histograms['emt']['hww'])
     errorEMT.SetMarkerSize(0)
     errorEMT.SetFillColor(1)
     errorEMT.SetLineWidth(1)
@@ -418,22 +440,29 @@ if __name__ == "__main__":
         title='m_{H}=125 GeV', style='signal',
     )
 
+    histograms['eet']['hww'] = get_combined_histogram(
+        'WH_hww125', eet_channels, files_to_use_wh,
+        title='m_{H}=125 GeV', style='hww',
+    )
+
     histograms['eet']['data'] = get_combined_histogram(
         'data_obs', eet_channels, files_to_use_wh,
         title='data', style='data'
     )
 
     histograms['eet']['stack'] = ROOT.THStack("eet_stack", "eet_stack")
-    histograms['eet']['stack'].Add(histograms['eet']['zz'], 'hist')
     histograms['eet']['stack'].Add(histograms['eet']['charge_fakes'], 'hist')
     histograms['eet']['stack'].Add(histograms['eet']['fakes'], 'hist')
+    histograms['eet']['stack'].Add(histograms['eet']['zz'], 'hist')
     histograms['eet']['stack'].Add(histograms['eet']['wz'], 'hist')
+    histograms['eet']['stack'].Add(histograms['eet']['hww'], 'hist')
 
     errorEET=histograms['eet']['zz'].Clone()
     errorEET.SetFillStyle(3013)
     errorEET.Add(histograms['eet']['fakes'])
     errorEET.Add(histograms['eet']['charge_fakes'])
     errorEET.Add(histograms['eet']['wz'])
+    errorEET.Add(histograms['eet']['hww'])
     errorEET.SetMarkerSize(0)
     errorEET.SetFillColor(1)
     errorEET.SetLineWidth(1)
@@ -445,13 +474,13 @@ if __name__ == "__main__":
     llem_channels = ['eeem_zh', 'mmme_zh']
 
     histograms['llem']['zz'] = get_combined_histogram(
-        'ZZ', llem_channels, files_to_use_zh, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ'], llem_channels, files_to_use_zh, title='ZZ',
         style='zz'
     )
 
-    histograms['llem']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], llem_channels, files_to_use_zh, title='ZZ',
-        style='zz'
+    histograms['llem']['hww'] = get_combined_histogram(
+        'ZH_hww125', llem_channels, files_to_use_zh, title='HWW',
+        style='hww'
     )
 
     histograms['llem']['fakes'] = get_combined_histogram(
@@ -470,28 +499,38 @@ if __name__ == "__main__":
     )
 
     histograms['llem']['stack'] = ROOT.THStack("llem_stack", "llem_stack")
-    histograms['llem']['stack'].Add(histograms['llem']['zz'], 'hist')
     histograms['llem']['stack'].Add(histograms['llem']['fakes'], 'hist')
+    histograms['llem']['stack'].Add(histograms['llem']['zz'], 'hist')
+    histograms['llem']['stack'].Add(histograms['llem']['hww'], 'hist')
     histograms['llem']['stack'].Add(histograms['llem']['signal'], 'hist')
 
     errorLLEM=histograms['llem']['zz'].Clone()
     errorLLEM.SetFillStyle(3013)
     errorLLEM.Add(histograms['llem']['fakes'])
+    errorLLEM.Add(histograms['llem']['hww'])
     errorLLEM.SetMarkerSize(0) 
     errorLLEM.SetFillColor(1)
     errorLLEM.SetLineWidth(1)
+
+    histograms['llem']['data'].SetMarkerStyle(20)
+    histograms['llem']['data'].SetMarkerColor(ROOT.EColor.kBlack)
+    histograms['llem']['data'].SetLineColor(ROOT.EColor.kBlack)
+    histograms['llem']['data'].SetLineWidth(2)
+    histograms['llem']['data'].SetMarkerSize(2)
 
     histograms['llem']['legend'] = make_legend()
     histograms['llem']['legend'].AddEntry(histograms['llem']['signal'],
                                         "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
     histograms['llem']['legend'].AddEntry(histograms['llem']['data'],
                                         "#bf{observed}", "lp")
+    histograms['llem']['legend'].AddEntry(histograms['llem']['hww'], "#bf{VH(125 GeV)#rightarrow VWW}", "f")
+    histograms['llem']['legend'].AddEntry(histograms['llem']['zz'], "#bf{ZZ}", "f")
     histograms['llem']['legend'].AddEntry(histograms['llem']['fakes'],
                                         "#bf{reducible bkg.}", "f")
-    histograms['llem']['legend'].AddEntry(histograms['llem']['zz'], "#bf{ZZ}", "f")
-    histograms['llem']['legend'].AddEntry(errorLLEM, "#bf{bkg. uncertainty}", "F")
+    if args.prefit==False:
+       histograms['llem']['legend'].AddEntry(errorLLEM, "#bf{bkg. uncertainty}", "F")
 
-    # LLEM
+    # LLMT
     histograms['llmt'] = {}
     llmt_channels = ['eemt_zh', 'mmmt_zh']
 
@@ -501,8 +540,13 @@ if __name__ == "__main__":
     )
 
     histograms['llmt']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], llmt_channels, files_to_use_zh, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ'], llmt_channels, files_to_use_zh, title='ZZ',
         style='zz'
+    )
+
+    histograms['llmt']['hww'] = get_combined_histogram(
+        'ZH_hww125', llmt_channels, files_to_use_zh, title='HWW',
+        style='hww'
     )
 
     histograms['llmt']['fakes'] = get_combined_histogram(
@@ -521,13 +565,15 @@ if __name__ == "__main__":
     )
 
     histograms['llmt']['stack'] = ROOT.THStack("llmt_stack", "llmt_stack")
-    histograms['llmt']['stack'].Add(histograms['llmt']['zz'], 'hist')
     histograms['llmt']['stack'].Add(histograms['llmt']['fakes'], 'hist')
+    histograms['llmt']['stack'].Add(histograms['llmt']['zz'], 'hist')
+    histograms['llmt']['stack'].Add(histograms['llmt']['hww'], 'hist')
     histograms['llmt']['stack'].Add(histograms['llmt']['signal'], 'hist')
 
     errorLLMT=histograms['llmt']['zz'].Clone()
     errorLLMT.SetFillStyle(3013)
     errorLLMT.Add(histograms['llmt']['fakes'])
+    errorLLMT.Add(histograms['llmt']['hww'])
     errorLLMT.SetMarkerSize(0)
     errorLLMT.SetFillColor(1)
     errorLLMT.SetLineWidth(1)
@@ -542,8 +588,13 @@ if __name__ == "__main__":
     )
 
     histograms['llet']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], llet_channels, files_to_use_zh, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ'], llet_channels, files_to_use_zh, title='ZZ',
         style='zz'
+    )
+
+    histograms['llet']['hww'] = get_combined_histogram(
+        'ZH_hww125', llet_channels, files_to_use_zh, title='HWW',
+        style='hww'
     )
 
     histograms['llet']['fakes'] = get_combined_histogram(
@@ -562,13 +613,15 @@ if __name__ == "__main__":
     )
 
     histograms['llet']['stack'] = ROOT.THStack("llet_stack", "llet_stack")
-    histograms['llet']['stack'].Add(histograms['llet']['zz'], 'hist')
     histograms['llet']['stack'].Add(histograms['llet']['fakes'], 'hist')
+    histograms['llet']['stack'].Add(histograms['llet']['zz'], 'hist')
+    histograms['llet']['stack'].Add(histograms['llet']['hww'], 'hist')
     histograms['llet']['stack'].Add(histograms['llet']['signal'], 'hist')
 
     errorLLET=histograms['llet']['zz'].Clone()
     errorLLET.SetFillStyle(3013)
     errorLLET.Add(histograms['llet']['fakes'])
+    errorLLET.Add(histograms['llet']['hww'])
     errorLLET.SetMarkerSize(0)
     errorLLET.SetFillColor(1)
     errorLLET.SetLineWidth(1)
@@ -583,8 +636,13 @@ if __name__ == "__main__":
     )
 
     histograms['lltt']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], lltt_channels, files_to_use_zh, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ'], lltt_channels, files_to_use_zh, title='ZZ',
         style='zz'
+    )
+
+    histograms['lltt']['hww'] = get_combined_histogram(
+        'ZH_hww125', lltt_channels, files_to_use_zh, title='HWW',
+        style='hww'
     )
 
     histograms['lltt']['fakes'] = get_combined_histogram(
@@ -603,13 +661,15 @@ if __name__ == "__main__":
     )
 
     histograms['lltt']['stack'] = ROOT.THStack("lltt_stack", "lltt_stack")
-    histograms['lltt']['stack'].Add(histograms['lltt']['zz'], 'hist')
     histograms['lltt']['stack'].Add(histograms['lltt']['fakes'], 'hist')
+    histograms['lltt']['stack'].Add(histograms['lltt']['zz'], 'hist')
+    histograms['lltt']['stack'].Add(histograms['lltt']['hww'], 'hist')
     histograms['lltt']['stack'].Add(histograms['lltt']['signal'], 'hist')
 
     errorLLTT=histograms['lltt']['zz'].Clone()
     errorLLTT.SetFillStyle(3013)
     errorLLTT.Add(histograms['lltt']['fakes'])
+    errorLLTT.Add(histograms['lltt']['hww'])
     errorLLTT.SetMarkerSize(0)
     errorLLTT.SetFillColor(1)
     errorLLTT.SetLineWidth(1)
@@ -641,8 +701,8 @@ if __name__ == "__main__":
         title='data', style='data')
 
     histograms['mtt']['stack'] = ROOT.THStack("mtt_stack", "mtt_stack")
-    histograms['mtt']['stack'].Add(histograms['mtt']['zz'], "hist")
     histograms['mtt']['stack'].Add(histograms['mtt']['fakes'], "hist")
+    histograms['mtt']['stack'].Add(histograms['mtt']['zz'], "hist")
     histograms['mtt']['stack'].Add(histograms['mtt']['wz'], "hist")
     histograms['mtt']['stack'].Add(histograms['mtt']['signal'], "hist")
 
@@ -660,10 +720,11 @@ if __name__ == "__main__":
     histograms['mtt']['legend'].AddEntry(histograms['mtt']['data'],
                                          "#bf{observed}", "lp")
     histograms['mtt']['legend'].AddEntry(histograms['mtt']['wz'], "#bf{WZ}", "f")
+    histograms['mtt']['legend'].AddEntry(histograms['mtt']['zz'], "#bf{ZZ}", "f")
     histograms['mtt']['legend'].AddEntry(histograms['mtt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['mtt']['legend'].AddEntry(histograms['mtt']['zz'], "#bf{ZZ}", "f")
-    histograms['mtt']['legend'].AddEntry(errorMTT,"#bf{bkg. uncertainty}","F")
+    if args.prefit==False:
+       histograms['mtt']['legend'].AddEntry(errorMTT,"#bf{bkg. uncertainty}","F")
 
 
     # ETT
@@ -693,8 +754,8 @@ if __name__ == "__main__":
         title='data', style='data')
 
     histograms['ett']['stack'] = ROOT.THStack("ett_stack", "ett_stack")
-    histograms['ett']['stack'].Add(histograms['ett']['zz'], "hist")
     histograms['ett']['stack'].Add(histograms['ett']['fakes'], "hist")
+    histograms['ett']['stack'].Add(histograms['ett']['zz'], "hist")
     histograms['ett']['stack'].Add(histograms['ett']['wz'], "hist")
     histograms['ett']['stack'].Add(histograms['ett']['signal'], "hist")
 
@@ -778,7 +839,8 @@ if __name__ == "__main__":
     canvas=MakeCanvas("asdf","asdf",800,800)
 
     histograms['mmt']['stack'].Draw()
-    errorMMT.Draw("e2same");
+    if args.prefit==False:
+       errorMMT.Draw("e2same");
     #histograms['mmt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
@@ -788,7 +850,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/mmt' + plot_suffix)
 
     histograms['emt']['stack'].Draw()
-    errorEMT.Draw("e2same");
+    if args.prefit==False:
+       errorEMT.Draw("e2same");
     #histograms['emt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
@@ -798,7 +861,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/emt' + plot_suffix)
 
     histograms['eet']['stack'].Draw()
-    errorEET.Draw("e2same");
+    if args.prefit==False:
+       errorEET.Draw("e2same");
     #histograms['eet']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
@@ -808,7 +872,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/eet' + plot_suffix)
 
     histograms['llem']['stack'].Draw()
-    errorLLEM.Draw("e2same")
+    if args.prefit==False:
+       errorLLEM.Draw("e2same")
     histograms['llem']['poisson'].SetMarkerStyle(20)
     histograms['llem']['poisson'].SetMarkerColor(ROOT.EColor.kBlack)
     histograms['llem']['poisson'].SetLineColor(ROOT.EColor.kBlack)
@@ -823,7 +888,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/llem' + plot_suffix)
 
     histograms['llmt']['stack'].Draw()
-    errorLLMT.Draw("e2same")
+    if args.prefit==False:
+       errorLLMT.Draw("e2same")
     histograms['llmt']['poisson'].SetMarkerStyle(20)
     histograms['llmt']['poisson'].SetMarkerColor(ROOT.EColor.kBlack)
     histograms['llmt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
@@ -838,7 +904,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/llmt' + plot_suffix)
 
     histograms['llet']['stack'].Draw()
-    errorLLET.Draw("e2same")
+    if args.prefit==False:
+       errorLLET.Draw("e2same")
     histograms['llet']['poisson'].SetMarkerStyle(20)
     histograms['llet']['poisson'].SetMarkerColor(ROOT.EColor.kBlack)
     histograms['llet']['poisson'].SetLineColor(ROOT.EColor.kBlack)
@@ -853,7 +920,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/llet' + plot_suffix)
 
     histograms['lltt']['stack'].Draw()
-    errorLLTT.Draw("e2same")
+    if args.prefit==False:
+       errorLLTT.Draw("e2same")
     histograms['lltt']['poisson'].SetMarkerStyle(20)
     histograms['lltt']['poisson'].SetMarkerColor(ROOT.EColor.kBlack)
     histograms['lltt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
@@ -868,7 +936,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/lltt' + plot_suffix)
 
     histograms['mtt']['stack'].Draw()
-    errorMTT.Draw("e2same")
+    if args.prefit==False:
+       errorMTT.Draw("e2same")
     #histograms['mtt']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['mtt']['legend'].Draw()
@@ -878,7 +947,8 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/mtt' + plot_suffix)
 
     histograms['ett']['stack'].Draw()
-    errorETT.Draw("e2same")
+    if args.prefit==False:
+       errorETT.Draw("e2same")
     #histograms['ett']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['mtt']['legend'].Draw()
