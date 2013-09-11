@@ -102,6 +102,12 @@ _styles = {
         'fillstyle': 1001,
         'linewidth': 3,
     },
+    "hww": {
+        'fillstyle': 1001,
+        'fillcolor': ROOT.EColor.kGreen + 3,
+        'linecolor': ROOT.EColor.kBlack,
+        'linewidth': 3,
+    },
     "signal": {
         'fillcolor': 0,
         'fillstyle': 0,
@@ -149,7 +155,7 @@ def get_combined_histogram(histograms, directories, files, title=None,
     for file in files:
         for path in directories:
             for histogram in histograms:
-		   print path,histogram
+		   #print path,histogram
 		   #if os.path.isfile(path + '/' + histogram):
                    th1 = file.Get(path + '/' + histogram)
                    if output is None:
@@ -289,6 +295,10 @@ if __name__ == "__main__":
         'WH125', llt_channels, files_to_use_wh,
         title='m_{H}=125 GeV', style='signal',
     )
+    histograms['llt']['hww'] = get_combined_histogram(
+        'WH_hww125', llt_channels, files_to_use_wh,
+        title='m_{H}=125 GeV', style='hww',
+    )
     histograms['llt']['data'] = get_combined_histogram(
         'data_obs', llt_channels, files_to_use_wh,
         title='data', style='data'
@@ -301,35 +311,35 @@ if __name__ == "__main__":
         output.SetBorderSize(0)
         return output
     histograms['llt']['stack'] = ROOT.THStack("llt_stack", "llt_stack")
-    histograms['llt']['stack'].Add(histograms['llt']['zz'], 'hist')
     histograms['llt']['stack'].Add(histograms['llt']['charge_fakes'], 'hist')
     histograms['llt']['stack'].Add(histograms['llt']['fakes'], 'hist')
+    histograms['llt']['stack'].Add(histograms['llt']['zz'], 'hist')
     histograms['llt']['stack'].Add(histograms['llt']['wz'], 'hist')
+    histograms['llt']['stack'].Add(histograms['llt']['hww'], 'hist')
 
     errorLLT=histograms['llt']['zz'].Clone()
     errorLLT.SetFillStyle(3013)
     errorLLT.Add(histograms['llt']['fakes'])
-    #errorLLT.Add(histograms['llt']['charge_fakes'])
+    errorLLT.Add(histograms['llt']['charge_fakes'])
     errorLLT.Add(histograms['llt']['wz'])
+    errorLLT.Add(histograms['llt']['hww'])
     errorLLT.SetMarkerSize(0)
     errorLLT.SetFillColor(1)
     errorLLT.SetLineWidth(1)
 
     histograms['llt']['stack'].Add(histograms['llt']['signal'], 'hist')
-    print "signal"
 
     histograms['llt']['legend'] = make_legend()
     histograms['llt']['legend'].AddEntry(histograms['llt']['signal'],
                                          "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
     histograms['llt']['legend'].AddEntry(histograms['llt']['data'],
                                          "#bf{observed}", "lp")
+    histograms['llt']['legend'].AddEntry(histograms['llt']['hww'], "#bf{VH(125 GeV)#rightarrow VWW}", "f")
     histograms['llt']['legend'].AddEntry(histograms['llt']['wz'], "#bf{WZ}", "f")
+    histograms['llt']['legend'].AddEntry(histograms['llt']['zz'], "#bf{ZZ}", "f")
     histograms['llt']['legend'].AddEntry(histograms['llt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['zz'], "#bf{ZZ}", "f")
     histograms['llt']['legend'].AddEntry(errorLLT, "#bf{bkg. uncertainty}", "f")
-    #histograms['llt']['legend'].AddEntry(histograms['llt']['charge_fakes'],
-    #                                     "Charge fakes", "f")
 
     # ZH
     histograms['zh'] = {}
@@ -338,19 +348,19 @@ if __name__ == "__main__":
         'mmme_zh', 'mmet_zh', 'mmmt_zh', 'mmtt_zh',
     ]
 
-    #histograms['zh']['zz'] = get_combined_histogram(
-    #    'ZZ', zh_channels, files_to_use, title='ZZ',
-    #    style='zz'
-    #)
-
     histograms['zh']['zz'] = get_combined_histogram(
-        ['ZZ', 'GGToZZ2L2L', 'TTZ', 'ZH_hww125'], zh_channels, files_to_use_zh, title='ZZ',
+        ['ZZ', 'GGToZZ2L2L', 'TTZ'], zh_channels, files_to_use_zh, title='ZZ',
         style='zz'
     )
 
     histograms['zh']['fakes'] = get_combined_histogram(
         'Zjets', zh_channels, files_to_use_zh, title='Reducible bkg.',
         style='fakes'
+    )
+
+    histograms['zh']['hww'] = get_combined_histogram(
+        'ZH_hww125', zh_channels, files_to_use_zh,
+        title='m_{H}=125 GeV', style='hww',
     )
 
     histograms['zh']['signal'] = get_combined_histogram(
@@ -364,13 +374,15 @@ if __name__ == "__main__":
     )
 
     histograms['zh']['stack'] = ROOT.THStack("zh_stack", "zh_stack")
-    histograms['zh']['stack'].Add(histograms['zh']['zz'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['fakes'], 'hist')
+    histograms['zh']['stack'].Add(histograms['zh']['zz'], 'hist')
+    histograms['zh']['stack'].Add(histograms['zh']['hww'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['signal'], 'hist')
     
     errorZH=histograms['zh']['zz'].Clone()
     errorZH.SetFillStyle(3013)
     errorZH.Add(histograms['zh']['fakes'])
+    errorZH.Add(histograms['zh']['hww'])
     errorZH.SetMarkerSize(0) 
     errorZH.SetFillColor(1)
     errorZH.SetLineWidth(1)
@@ -380,9 +392,11 @@ if __name__ == "__main__":
                                         "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
     histograms['zh']['legend'].AddEntry(histograms['llt']['data'],
                                         "#bf{observed}", "lp")
+    histograms['zh']['legend'].AddEntry(histograms['zh']['hww'],
+                                        "#bf{VH(125 GeV)#rightarrow VWW}", "f")
+    histograms['zh']['legend'].AddEntry(histograms['zh']['zz'], "#bf{ZZ}", "f")
     histograms['zh']['legend'].AddEntry(histograms['zh']['fakes'],
                                         "#bf{reducible bkg.}", "f")
-    histograms['zh']['legend'].AddEntry(histograms['zh']['zz'], "#bf{ZZ}", "f")
     histograms['zh']['legend'].AddEntry(errorZH, "#bf{bkg. uncertainty}", "F")
 
     # LTT
@@ -412,8 +426,8 @@ if __name__ == "__main__":
         title='data', style='data')
 
     histograms['ltt']['stack'] = ROOT.THStack("ltt_stack", "ltt_stack")
-    histograms['ltt']['stack'].Add(histograms['ltt']['zz'], "hist")
     histograms['ltt']['stack'].Add(histograms['ltt']['fakes'], "hist")
+    histograms['ltt']['stack'].Add(histograms['ltt']['zz'], "hist")
     histograms['ltt']['stack'].Add(histograms['ltt']['wz'], "hist")
     histograms['ltt']['stack'].Add(histograms['ltt']['signal'], "hist")
 
@@ -432,9 +446,9 @@ if __name__ == "__main__":
     histograms['ltt']['legend'].AddEntry(histograms['ltt']['data'],
                                          "#bf{observed}", "lp")
     histograms['ltt']['legend'].AddEntry(histograms['ltt']['wz'], "#bf{WZ}", "f")
+    histograms['ltt']['legend'].AddEntry(histograms['ltt']['zz'], "#bf{ZZ}", "f")
     histograms['ltt']['legend'].AddEntry(histograms['ltt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['ltt']['legend'].AddEntry(histograms['ltt']['zz'], "#bf{ZZ}", "f")
     histograms['ltt']['legend'].AddEntry(errorLTT,"#bf{bkg. uncertainty}","F")
 
     # Apply some styles to all the histograms
