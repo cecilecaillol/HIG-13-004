@@ -295,15 +295,15 @@ plots/.limits_timestamp: $(LIMITDIR)/.plot_timestamp
 
 $(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llem/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llmt/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llet/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py eet/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mtt/
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ett/
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llem/ max=40.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llmt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llet/ max=40.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py eet/ max=40.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mtt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ett/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
 	rm -f $(LIMITDIR)/limits_limit.root 
 	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*_limit.root
@@ -328,8 +328,8 @@ $(LIMITDIR)/.plot_signif_timestamp: $(LIMITDIR)/.computed_signif $(BASE)/HiggsAn
 	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
 	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py cmb/ expectedOnly=True
 	# Combine the output of all the individual limit results into a single file.
-	rm -f $(LIMITDIR)/limits_significance.root 
-	hadd $(LIMITDIR)/limits_significance.root $(LIMITDIR)/*_significance.root
+	#rm -f $(LIMITDIR)/limits_significance.root 
+	#hadd $(LIMITDIR)/limits_significance.root $(LIMITDIR)/*_significance.root
 	#cd $(LIMITDIR) && root -b -q '../../HiggsAnalysis/HiggsToTauTau/macros/compareLimits.C+("limits_limit.root", "cmb,vhtt_zh,vhtt_wh_had,vhtt_wh", true, false, "sm-xsex", 0, 25, false,"  Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24 fb^{-1}")'
 	touch $@
 
@@ -343,7 +343,6 @@ plots/.significances_timestamp: $(LIMITDIR)/.plot_signif_timestamp
 	cp $(LIMITDIR)/vhtt_wh_had_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.pdf plots/
-	#cp $(LIMITDIR)/singleLimits_expected_sm.pdf plots/exp_limit_breakdown.pdf
 	touch $@
 
 plotsignificances: plots/.significances_timestamp
@@ -447,8 +446,8 @@ massplots: plots/.mass_timestamp
 $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	# make a copy of the directory so we can mess with them.
 	rm -fr $(HTT_TEST)/root_postfit_zh
-	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_zh
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_zh/125
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_zh
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_zh.txt
 	# apply all the pulls to the shapes
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_3_8TeV.txt \
@@ -476,8 +475,8 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	  --bins eett_zh mmtt_zh \
 	  --verbose
 	rm -fr $(HTT_TEST)/root_postfit_wh_had
-	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
+	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh_had.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_7_8TeV.txt \
 	  --bins mtt --verbose
@@ -488,8 +487,8 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_8_7TeV.txt \
 	  --bins ett --verbose
 	rm -fr $(HTT_TEST)/root_postfit_wh
+	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh/125
 	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh
-	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_0_8TeV.txt \
 	  --bins mmtCatHigh mmtCatLow \

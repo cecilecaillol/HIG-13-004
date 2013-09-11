@@ -149,7 +149,7 @@ def get_combined_histogram(histograms, directories, files, title=None,
     for file in files:
         for path in directories:
             for histogram in histograms:
-		   print path,histogram
+		   #print path,histogram
 		   #if os.path.isfile(path + '/' + histogram):
                    th1 = file.Get(path + '/' + histogram)
                    if output is None:
