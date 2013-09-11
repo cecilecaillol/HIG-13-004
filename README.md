@@ -59,6 +59,8 @@ make plots/vh_table.tex
 
 or you can just run "make all", which runs everything.
 
+Run sh organize_plot_directory.sh if you want to sort all the plots in the "plots" directory.
+
 Signal Injection
 ----------------
 
