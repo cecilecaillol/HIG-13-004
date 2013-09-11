@@ -162,16 +162,16 @@ def get_combined_histogram(histograms, directories, files, title=None,
                        output = th1.Clone()
                    else:
                        output.Add(th1)
-                   #if histogram=="data_obs":
-                   #     if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
-                   #         for i in range(6,9):#partial blinding
-                   #              output.SetBinContent(i,-100)
+                   if histogram=="data_obs":
+                        if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
+                            for i in range(6,9):#partial blinding
+                                 output.SetBinContent(i,-100)
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                   #     if path=="ett" or directories=="mtt":
-                   #         for i in range(4,7):
-                   #              output.SetBinContent(i,-100)
+                        if path=="ett" or directories=="mtt":
+                            for i in range(4,7):
+                                 output.SetBinContent(i,-100)
     if scale is not None:
         output.Scale(scale)
     if title is not None:
@@ -339,7 +339,8 @@ if __name__ == "__main__":
     histograms['llt']['legend'].AddEntry(histograms['llt']['zz'], "#bf{ZZ}", "f")
     histograms['llt']['legend'].AddEntry(histograms['llt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['llt']['legend'].AddEntry(errorLLT, "#bf{bkg. uncertainty}", "f")
+    if args.prefit==False:
+       histograms['llt']['legend'].AddEntry(errorLLT, "#bf{bkg. uncertainty}", "f")
 
     # ZH
     histograms['zh'] = {}
@@ -397,7 +398,8 @@ if __name__ == "__main__":
     histograms['zh']['legend'].AddEntry(histograms['zh']['zz'], "#bf{ZZ}", "f")
     histograms['zh']['legend'].AddEntry(histograms['zh']['fakes'],
                                         "#bf{reducible bkg.}", "f")
-    histograms['zh']['legend'].AddEntry(errorZH, "#bf{bkg. uncertainty}", "F")
+    if args.prefit==False:
+       histograms['zh']['legend'].AddEntry(errorZH, "#bf{bkg. uncertainty}", "F")
 
     # LTT
     histograms['ltt'] = {}
@@ -449,7 +451,8 @@ if __name__ == "__main__":
     histograms['ltt']['legend'].AddEntry(histograms['ltt']['zz'], "#bf{ZZ}", "f")
     histograms['ltt']['legend'].AddEntry(histograms['ltt']['fakes'],
                                          "#bf{reducible bkg.}", "f")
-    histograms['ltt']['legend'].AddEntry(errorLTT,"#bf{bkg. uncertainty}","F")
+    if args.prefit==False:
+       histograms['ltt']['legend'].AddEntry(errorLTT,"#bf{bkg. uncertainty}","F")
 
     # Apply some styles to all the histograms
     for channel in ['llt', 'zh', 'ltt']:
@@ -514,7 +517,8 @@ if __name__ == "__main__":
     canvas=MakeCanvas("asdf","asdf",800,800)
 
     histograms['llt']['stack'].Draw()
-    errorLLT.Draw("e2same");
+    if args.prefit==False:
+       errorLLT.Draw("e2same");
     #histograms['llt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['llt']['legend'].Draw()
@@ -523,13 +527,14 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/llt' + plot_suffix)
 
     histograms['zh']['stack'].Draw()
-    errorZH.Draw("e2same")
+    if args.prefit==False:
+       errorZH.Draw("e2same")
     histograms['zh']['poisson'].SetMarkerStyle(20)
     histograms['zh']['poisson'].SetMarkerColor(ROOT.EColor.kBlack)
     histograms['zh']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['zh']['poisson'].SetLineWidth(2)
     histograms['zh']['poisson'].SetMarkerSize(2)
-    #histograms['zh']['poisson'].Draw('pe same')
+    histograms['zh']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['zh']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -537,8 +542,9 @@ if __name__ == "__main__":
     canvas.SaveAs('plots/zh' + plot_suffix)
 
     histograms['ltt']['stack'].Draw()
-    errorLTT.Draw("e2same")
-    #histograms['ltt']['poisson'].Draw('pe same')
+    if args.prefit==False:
+       errorLTT.Draw("e2same")
+    histograms['ltt']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['ltt']['legend'].Draw()
     limiBlurb=add_cms_blurb(sqrts, int_lumi)
