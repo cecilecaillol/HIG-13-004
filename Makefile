@@ -323,10 +323,10 @@ plotlimits: plots/.limits_timestamp plots/.chan_limits_timestamp
 
 $(LIMITDIR)/.plot_signif_timestamp: $(LIMITDIR)/.computed_signif $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
-	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_zh/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py cmb/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_zh/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_wh/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py cmb/ expectedOnly=True
 	# Combine the output of all the individual limit results into a single file.
 	#rm -f $(LIMITDIR)/limits_significance.root 
 	#hadd $(LIMITDIR)/limits_significance.root $(LIMITDIR)/*_significance.root
