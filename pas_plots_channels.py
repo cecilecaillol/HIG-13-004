@@ -172,16 +172,16 @@ def get_combined_histogram(histograms, directories, files, title=None,
                        output = th1.Clone()
                    else:
                        output.Add(th1)
-                   #if histogram=="data_obs":
-                   #     if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
-                   #         for i in range(6,9):#partial blinding
-                   #              output.SetBinContent(i,-100)
+                   if histogram=="data_obs":
+                        if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
+                            for i in range(6,9):#partial blinding
+                                 output.SetBinContent(i,-100)
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                   #     if path=="ett" or directories=="mtt":
-                   #         for i in range(4,7):
-                   #              output.SetBinContent(i,-100)
+                        if path=="ett" or directories=="mtt":
+                            for i in range(4,7):
+                                 output.SetBinContent(i,-100)
     if scale is not None:
         output.Scale(scale)
     if title is not None:
@@ -879,7 +879,7 @@ if __name__ == "__main__":
     histograms['llem']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['llem']['poisson'].SetLineWidth(2)
     histograms['llem']['poisson'].SetMarkerSize(2)
-    #histograms['llem']['poisson'].Draw('pe same')
+    histograms['llem']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -895,7 +895,7 @@ if __name__ == "__main__":
     histograms['llmt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['llmt']['poisson'].SetLineWidth(2)
     histograms['llmt']['poisson'].SetMarkerSize(2)
-    #histograms['llem']['poisson'].Draw('pe same')
+    histograms['llem']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -911,7 +911,7 @@ if __name__ == "__main__":
     histograms['llet']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['llet']['poisson'].SetLineWidth(2)
     histograms['llet']['poisson'].SetMarkerSize(2)
-    #histograms['llem']['poisson'].Draw('pe same')
+    histograms['llem']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -927,7 +927,7 @@ if __name__ == "__main__":
     histograms['lltt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['lltt']['poisson'].SetLineWidth(2)
     histograms['lltt']['poisson'].SetMarkerSize(2)
-    #histograms['llem']['poisson'].Draw('pe same')
+    histograms['llem']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -938,7 +938,7 @@ if __name__ == "__main__":
     histograms['mtt']['stack'].Draw()
     if args.prefit==False:
        errorMTT.Draw("e2same")
-    #histograms['mtt']['poisson'].Draw('pe same')
+    histograms['mtt']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['mtt']['legend'].Draw()
     limiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -949,7 +949,7 @@ if __name__ == "__main__":
     histograms['ett']['stack'].Draw()
     if args.prefit==False:
        errorETT.Draw("e2same")
-    #histograms['ett']['poisson'].Draw('pe same')
+    histograms['ett']['poisson'].Draw('pe same')
     catltt.Draw("same")
     histograms['mtt']['legend'].Draw()
     limiBlurb=add_cms_blurb(sqrts, int_lumi)
