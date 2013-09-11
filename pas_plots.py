@@ -149,7 +149,7 @@ def get_combined_histogram(histograms, directories, files, title=None,
     for file in files:
         for path in directories:
             for histogram in histograms:
-		   #print path,histogram
+		   print path,histogram
 		   #if os.path.isfile(path + '/' + histogram):
                    th1 = file.Get(path + '/' + histogram)
                    if output is None:
@@ -204,44 +204,48 @@ if __name__ == "__main__":
 
     #postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
     #postfit_8TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_8TeV.root")
-    postfit_7TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_7TeV.root")
-    postfit_8TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_8TeV.root")
-    postfit_7TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_7TeV.root")
-    postfit_8TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_8TeV.root")
-    postfit_7TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_7TeV.root")
-    postfit_8TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_8TeV.root")
+    files_to_use_zh=prefit_7TeV_file
+    files_to_use_wh_had=prefit_7TeV_file
+    files_to_use_wh=prefit_7TeV_file
 
-    files_to_use_map_zh = {
-        (True, '7TeV'): [prefit_7TeV_file],
-        (True, '8TeV'): [prefit_8TeV_file],
-        (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
-        (False, '7TeV'): [postfit_7TeV_file_zh],
-        (False, '8TeV'): [postfit_8TeV_file_zh],
-        (False, 'all'): [postfit_8TeV_file_zh, postfit_7TeV_file_zh],
-    }
+    if args.MLfit=="channel":
+       postfit_7TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_7TeV.root")
+       postfit_8TeV_file_wh_had = ROOT.TFile.Open(postfit_src_wh_had + "/vhtt.input_8TeV.root")
+       postfit_7TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_7TeV.root")
+       postfit_8TeV_file_wh = ROOT.TFile.Open(postfit_src_wh + "/vhtt.input_8TeV.root")
+       postfit_7TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_7TeV.root")
+       postfit_8TeV_file_zh = ROOT.TFile.Open(postfit_src_zh + "/vhtt.input_8TeV.root")
 
-    files_to_use_map_wh = {
-        (True, '7TeV'): [prefit_7TeV_file],
-        (True, '8TeV'): [prefit_8TeV_file],
-        (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
-        (False, '7TeV'): [postfit_7TeV_file_wh],
-        (False, '8TeV'): [postfit_8TeV_file_wh],
-        (False, 'all'): [postfit_8TeV_file_wh, postfit_7TeV_file_wh],
-    }
+       files_to_use_map_zh = {
+           (True, '7TeV'): [prefit_7TeV_file],
+           (True, '8TeV'): [prefit_8TeV_file],
+           (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+           (False, '7TeV'): [postfit_7TeV_file_zh],
+           (False, '8TeV'): [postfit_8TeV_file_zh],
+           (False, 'all'): [postfit_8TeV_file_zh, postfit_7TeV_file_zh],
+       }
 
-    files_to_use_map_wh_had = {
-        (True, '7TeV'): [prefit_7TeV_file],
-        (True, '8TeV'): [prefit_8TeV_file],
-        (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
-        (False, '7TeV'): [postfit_7TeV_file_wh_had],
-        (False, '8TeV'): [postfit_8TeV_file_wh_had],
-        (False, 'all'): [postfit_8TeV_file_wh_had, postfit_7TeV_file_wh_had],
-    }
-    print args.prefit
+       files_to_use_map_wh = {
+           (True, '7TeV'): [prefit_7TeV_file],
+           (True, '8TeV'): [prefit_8TeV_file],
+           (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+           (False, '7TeV'): [postfit_7TeV_file_wh],
+           (False, '8TeV'): [postfit_8TeV_file_wh],
+           (False, 'all'): [postfit_8TeV_file_wh, postfit_7TeV_file_wh],
+       }
 
-    files_to_use_zh = files_to_use_map_zh[(args.prefit, args.period)]
-    files_to_use_wh_had = files_to_use_map_wh_had[(args.prefit, args.period)]
-    files_to_use_wh = files_to_use_map_wh[(args.prefit, args.period)]
+       files_to_use_map_wh_had = {
+           (True, '7TeV'): [prefit_7TeV_file],
+           (True, '8TeV'): [prefit_8TeV_file],
+           (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+           (False, '7TeV'): [postfit_7TeV_file_wh_had],
+           (False, '8TeV'): [postfit_8TeV_file_wh_had],
+           (False, 'all'): [postfit_8TeV_file_wh_had, postfit_7TeV_file_wh_had],
+       }
+    
+       files_to_use_zh = files_to_use_map_zh[(args.prefit, args.period)]
+       files_to_use_wh_had = files_to_use_map_wh_had[(args.prefit, args.period)]
+       files_to_use_wh = files_to_use_map_wh[(args.prefit, args.period)]
 
     if args.MLfit=="all":
         postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
