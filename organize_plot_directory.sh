@@ -7,11 +7,12 @@
  mkdir ZH/postfit
  mkdir ZH/limit
  mkdir LTT/limit
+ mkdir LLT/limit
  mkdir LLT/postfit
  mkdir LTT/postfit
  mkdir LTT/prefit
  mkdir LLT/prefit
- mv llet*prefit.pdf ZH/prefit/.
+ mv llet*prefit*.pdf ZH/prefit/.
  mv llet*prefit*.pdf ZH/prefit/.
  mv llem*prefit*.pdf ZH/prefit/.
  mv llmt*prefit*.pdf ZH/prefit/.
