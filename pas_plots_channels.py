@@ -179,7 +179,7 @@ def get_combined_histogram(histograms, directories, files, title=None,
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                        if path=="ett" or directories=="mtt":
+                        if path=="ett" or path=="mtt":
                             for i in range(4,7):
                                  output.SetBinContent(i,-100)
     if scale is not None:
