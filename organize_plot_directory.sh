@@ -7,11 +7,12 @@
  mkdir ZH/postfit
  mkdir ZH/limit
  mkdir LTT/limit
+ mkdir LLT/limit
  mkdir LLT/postfit
  mkdir LTT/postfit
  mkdir LTT/prefit
  mkdir LLT/prefit
- mv llet*prefit.pdf ZH/prefit/.
+ mv llet*prefit*.pdf ZH/prefit/.
  mv llet*prefit*.pdf ZH/prefit/.
  mv llem*prefit*.pdf ZH/prefit/.
  mv llmt*prefit*.pdf ZH/prefit/.
@@ -51,5 +52,9 @@
  mv *zh*significance*.* ZH/limit/.
  mv *wh_had*significance*.* LTT/limit/.
  mv *wh_*significance*.* LLT/limit/.
+ mv compa_zh.pdf ZH/limit/.
+ mv compa_wh_lep.pdf LLT/limit/.
+ mv compa_wh_had.pdf LTT/limit/.
+ mv compa_ZH_WH.pdf CMB/.
  mv cmb* CMB/.
  mv *breakdown* CMB/.
