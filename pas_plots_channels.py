@@ -179,7 +179,7 @@ def get_combined_histogram(histograms, directories, files, title=None,
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                        if path=="ett" or directories=="mtt":
+                        if path=="ett" or path=="mtt":
                             for i in range(4,7):
                                  output.SetBinContent(i,-100)
     if scale is not None:
@@ -895,7 +895,7 @@ if __name__ == "__main__":
     histograms['llmt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['llmt']['poisson'].SetLineWidth(2)
     histograms['llmt']['poisson'].SetMarkerSize(2)
-    histograms['llem']['poisson'].Draw('pe same')
+    histograms['llmt']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -911,7 +911,7 @@ if __name__ == "__main__":
     histograms['llet']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['llet']['poisson'].SetLineWidth(2)
     histograms['llet']['poisson'].SetMarkerSize(2)
-    histograms['llem']['poisson'].Draw('pe same')
+    histograms['llet']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -927,7 +927,7 @@ if __name__ == "__main__":
     histograms['lltt']['poisson'].SetLineColor(ROOT.EColor.kBlack)
     histograms['lltt']['poisson'].SetLineWidth(2)
     histograms['lltt']['poisson'].SetMarkerSize(2)
-    histograms['llem']['poisson'].Draw('pe same')
+    histograms['lltt']['poisson'].Draw('pe same')
     catZH.Draw("same")
     histograms['llem']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
