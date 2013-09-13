@@ -30,7 +30,7 @@ SETUPBBB=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb
 SETUPBBB2=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb2
 HTT_TEST=$(BASE)/HiggsAnalysis/HiggsToTauTau/test
 
-# where the limit directory lives 
+# where the limit directory lives (in HIG-12-053) 
 LIMITDIR=$(WD)/limits
 
 # where the raw generated cards are generated.
@@ -296,17 +296,25 @@ plots/.limits_timestamp: $(LIMITDIR)/.plot_timestamp
 $(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llem/ max=40.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llmt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llmt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py llet/ max=40.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/ max=30.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/ max=30.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/ max=30.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/ max=40.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/ max=40.0
+	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py eet/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mtt/ max=30.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ett/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
 	rm -f $(LIMITDIR)/limits_limit.root 
 	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*_limit.root
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "vhtt_wh_had,vhtt_zh,vhtt_wh,cmb", true, false, "sm-xsex", 0, 20, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	mv singleLimits_expected_sm.pdf plots/compa_ZH_WH.pdf
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "ett,mtt,vhtt_wh_had", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	mv singleLimits_expected_sm.pdf plots/compa_wh_had.pdf
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "eet,mmt,emt,vhtt_wh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	mv singleLimits_expected_sm.pdf plots/compa_wh_lep.pdf
+	 root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "llem,llet,lltt,llmt,vhtt_zh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	mv singleLimits_expected_sm.pdf plots/compa_zh.pdf
 	touch $@
 
 plots/.chan_limits_timestamp: $(LIMITDIR)/.chan_plot_timestamp
@@ -323,14 +331,14 @@ plotlimits: plots/.limits_timestamp plots/.chan_limits_timestamp
 
 $(LIMITDIR)/.plot_signif_timestamp: $(LIMITDIR)/.computed_signif $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
-	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_zh/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_wh/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
-	cd $(LIMITDIR) && plot --significance-frequentist $(WD)/sm_vhtt_significance_layout.py cmb/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_zh/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
+	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py cmb/ expectedOnly=True
 	# Combine the output of all the individual limit results into a single file.
 	#rm -f $(LIMITDIR)/limits_significance.root 
 	#hadd $(LIMITDIR)/limits_significance.root $(LIMITDIR)/*_significance.root
-	#cd $(LIMITDIR) && root -b -q '../../HiggsAnalysis/HiggsToTauTau/macros/compareLimits.C+("limits_limit.root", "cmb,vhtt_zh,vhtt_wh_had,vhtt_wh", true, false, "sm-xsex", 0, 25, false,"  Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24 fb^{-1}")'
+	##cd $(LIMITDIR) && root -b -q '../../HiggsAnalysis/HiggsToTauTau/macros/compareLimits.C+("limits_limit.root", "cmb,vhtt_zh,vhtt_wh_had,vhtt_wh", true, false, "sm-xsex", 0, 25, false,"  Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24 fb^{-1}")'
 	touch $@
 
 plots/.significances_timestamp: $(LIMITDIR)/.plot_signif_timestamp
@@ -343,6 +351,7 @@ plots/.significances_timestamp: $(LIMITDIR)/.plot_signif_timestamp
 	cp $(LIMITDIR)/vhtt_wh_had_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.pdf plots/
+	#cp $(LIMITDIR)/singleLimits_expected_sm.pdf plots/exp_limit_breakdown.pdf
 	touch $@
 
 plotsignificances: plots/.significances_timestamp
