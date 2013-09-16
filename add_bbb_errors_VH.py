@@ -229,13 +229,14 @@ if __name__ == "__main__":
              args.outputdir)
 
     if os.path.exists(args.outputdir):
-        if args.force:
-            shutil.rmtree(args.outputdir)
-        else:
-            log.error("Output directory already exists. Use -f to override.")
-            sys.exit(1)
-
-    shutil.copytree(args.inputdir, args.outputdir)
+        print "The output directory already exists!"
+        #if args.force:
+        #    shutil.rmtree(args.outputdir)
+        #else:
+        #    log.error("Output directory already exists. Use -f to override.")
+        #    sys.exit(1)
+    if args.inputdir != args.outputdir:
+        shutil.copytree(args.inputdir, args.outputdir)
 
     total_added_systematics = 0
 
