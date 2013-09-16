@@ -150,8 +150,8 @@ $(LIMITDIR)/.timestamp:  $(CARDS)/.ltt7_timestamp $(CARDS)/.ltt8_timestamp\
   $(CARDS)/.zh7_timestamp $(CARDS)/.zh8_timestamp\
   $(CARDS)/.llt7_timestamp $(CARDS)/.llt8_timestamp
 #$(LIMITDIR)/.timestamp:  $(CARDS)/.ltt8_timestamp\
-  $(CARDS)/.zh8_timestamp\
-  $(CARDS)/.llt8_timestamp
+  #$(CARDS)/.zh8_timestamp\
+  #$(CARDS)/.llt8_timestamp
 	rm -rf $(LIMITDIR)
 	cd $(BASE) && $(WD)/setup_htt_channels.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && setup-htt.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && touch $@
 
