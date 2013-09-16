@@ -27,7 +27,6 @@ WD=$(BASE)/HIG-13-004
 SETUP=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup/vhtt
 SETUP1=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup
 SETUPBBB=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb
-SETUPBBB2=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup_bbb2
 HTT_TEST=$(BASE)/HiggsAnalysis/HiggsToTauTau/test
 
 # where the limit directory lives (in HIG-12-053) 
@@ -72,7 +71,7 @@ $(CARDS)/.llt7_timestamp: $(SHAPEFILE7) $(LLT_CONFIGS7)
 	rm -f $@
 	# change to base, run the setup command, and touch the .timestamp if 
 	# successful
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:00,01,02:fakes' -i $(SETUPBBB2) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:00,01,02:fakes' -i $(SETUPBBB) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
 
 $(CARDS)/.llt8_timestamp: $(SHAPEFILE8) $(LLT_CONFIGS8)
 	@echo "Recipes for building EET, EMT and MMT cards 8TeV"
@@ -80,7 +79,7 @@ $(CARDS)/.llt8_timestamp: $(SHAPEFILE8) $(LLT_CONFIGS8)
 	rm -f $(CARDS)/vhtt_1_8TeV*
 	rm -f $(CARDS)/vhtt_2_8TeV*
 	rm -f $@
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:00,01,02:fakes' -i $(SETUPBBB) -o $(SETUPBBB2) && setup-datacards.py -i $(SETUPBBB2) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:00,01,02:fakes' -i $(SETUPBBB) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
 
 llt: $(CARDS)/.llt7_timestamp $(CARDS)/.llt8_timestamp
 #llt: $(CARDS)/.llt8_timestamp
@@ -100,7 +99,7 @@ $(CARDS)/.zh7_timestamp: $(SHAPEFILE7) $(ZH_CONFIGS7)
 	rm -f $(CARDS)/vhtt_5_7TeV*
 	rm -f $(CARDS)/vhtt_6_7TeV*
 	rm -f $@
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:03,04,05,06:Zjets' -i $(SETUPBBB2) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
 
 $(CARDS)/.zh8_timestamp: $(SHAPEFILE8) $(ZH_CONFIGS8)
 	@echo "Recipes for building ZH cards 8TeV"
@@ -109,7 +108,7 @@ $(CARDS)/.zh8_timestamp: $(SHAPEFILE8) $(ZH_CONFIGS8)
 	rm -f $(CARDS)/vhtt_5_8TeV*
 	rm -f $(CARDS)/vhtt_6_8TeV*
 	rm -f $@
-	cd $(BASE)  && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB2) && setup-datacards.py -i $(SETUPBBB2) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
+	cd $(BASE)  && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
 
 zh: $(CARDS)/.zh7_timestamp $(CARDS)/.zh8_timestamp
 #zh: $(CARDS)/.zh8_timestamp
@@ -135,7 +134,7 @@ $(CARDS)/.ltt8_timestamp: $(SHAPEFILE8) $(LTT_CONFIGS8)
 	rm -f $(CARDS)/vhtt_8_8TeV*
 	rm -f $@
 	cp $(SETUP1)/vhtt/vhtt.inputs-sm-8TeV.root $(SETUPBBB)/vhtt/.
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:07,08:fakes' -i $(SETUPBBB) -o $(SETUPBBB2) && setup-datacards.py -i $(SETUPBBB2) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "7 8" && ls $(CARDS)/vhtt_7_8TeV* $(CARDS)/vhtt_8_8TeV* | xargs -n1 -I{} $(WD)/prune_signal_uncertainties_ltt.py {} && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:07,08:fakes' -i $(SETUPBBB) -o $(SETUPBBB) && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "7 8" && ls $(CARDS)/vhtt_7_8TeV* $(CARDS)/vhtt_8_8TeV* | xargs -n1 -I{} $(WD)/prune_signal_uncertainties_ltt.py {} && touch $@
 
 ltt: $(CARDS)/.ltt7_timestamp $(CARDS)/.ltt8_timestamp
 #ltt: $(CARDS)/.ltt8_timestamp
