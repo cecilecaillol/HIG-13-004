@@ -21,7 +21,7 @@
 
 # Working directory
 BASE=$(CMSSW_BASE)/src
-WD=$(BASE)/AN-13-187
+WD=$(BASE)/HIG-13-004
 
 # Location of the CGS and uncertainty configuration files
 SETUP=$(BASE)/HiggsAnalysis/HiggsToTauTau/setup/vhtt
