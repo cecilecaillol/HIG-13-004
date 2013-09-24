@@ -49,7 +49,7 @@ def get_channel_dirs(finalstate, category):
     cat_map = {
         'vhtt' : {
         '00' : ['mmtCatHigh', 'mmtCatLow'],
-        '01' : ['emtCatHigh', 'emtCatHigh'],
+        '01' : ['emtCatHigh', 'emtCatLow'],
         '02' : ['eetCatHigh', 'eetCatLow'],
         '03' : ['mmme_zh', 'eeem_zh' ],
         '04' : ['mmmt_zh', 'eemt_zh' ],
