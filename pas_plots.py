@@ -162,16 +162,16 @@ def get_combined_histogram(histograms, directories, files, title=None,
                        output = th1.Clone()
                    else:
                        output.Add(th1)
-                   if histogram=="data_obs":
-                        if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
-                            for i in range(6,9):#partial blinding
-                                 output.SetBinContent(i,-100)
+                   #if histogram=="data_obs":
+                   #     if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
+                   #         for i in range(6,9):#partial blinding
+                   #              output.SetBinContent(i,-100)
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                        if path=="ett" or path=="mtt":
-                            for i in range(4,7):
-                                 output.SetBinContent(i,-100)
+                   #     if path=="ett" or path=="mtt":
+                   #         for i in range(4,7):
+                   #              output.SetBinContent(i,-100)
     if scale is not None:
         output.Scale(scale)
     if title is not None:
@@ -274,8 +274,10 @@ if __name__ == "__main__":
 
     # LLT
     histograms['llt'] = {}
-    llt_channels = ['emtCatHigh','emtCatLow', 'mmtCatHigh','mmtCatLow','eetCatHigh','eetCatLow']
-    llt_channels_flip = ['eetCatLow','eetCatHigh']
+    #llt_channels = ['emtCatHigh','emtCatLow', 'mmtCatHigh','mmtCatLow','eetCatHigh','eetCatLow']
+    #llt_channels_flip = ['eetCatLow','eetCatHigh']
+    llt_channels = ['emtCatLow', 'mmtCatLow','eetCatLow']
+    llt_channels_flip = ['eetCatLow']
 
     histograms['llt']['wz'] = get_combined_histogram(
         'wz', llt_channels, files_to_use_wh, title='WZ',
@@ -465,8 +467,10 @@ if __name__ == "__main__":
         fix_maximum(histograms[channel])
         # We have to draw it so things like the axes are initialized.
         histograms[channel]['stack'].Draw()
-        histograms[channel]['stack'].GetYaxis().SetTitle(
-            "#bf{Events/%i GeV}" % histograms[channel]['data'].GetBinWidth(1))
+        #histograms[channel]['stack'].GetYaxis().SetTitle(
+        #    "#bf{Events/%i GeV}" % histograms[channel]['data'].GetBinWidth(1))
+	histograms[channel]['stack'].GetYaxis().SetTitle(
+            "#bf{Events/ bin width [1/GeV]}" )
 	if channel=='zh':
            histograms[channel]['stack'].GetXaxis().SetTitle("#bf{m_{#tau#tau} [GeV]}")
 	else:
@@ -519,12 +523,12 @@ if __name__ == "__main__":
     histograms['llt']['stack'].Draw()
     if args.prefit==False:
        errorLLT.Draw("e2same");
-    #histograms['llt']['poisson'].Draw('pe same')
+    histograms['llt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['llt']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
     lumiBlurb.Draw("same")
-    canvas.SaveAs('plots/llt' + plot_suffix)
+    canvas.SaveAs('plots/llt_Low' + plot_suffix)
 
     histograms['zh']['stack'].Draw()
     if args.prefit==False:

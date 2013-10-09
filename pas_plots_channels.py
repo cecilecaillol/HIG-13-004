@@ -172,16 +172,16 @@ def get_combined_histogram(histograms, directories, files, title=None,
                        output = th1.Clone()
                    else:
                        output.Add(th1)
-                   if histogram=="data_obs":
-                        if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
-                            for i in range(6,9):#partial blinding
-                                 output.SetBinContent(i,-100)
+                   #if histogram=="data_obs":
+                   #    if path=="eeem_zh" or path=="mmme_zh" or path=="mmet_zh" or path=="eeet_zh" or path=="mmmt_zh" or path=="eemt_zh" or path=="mmtt_zh" or path=="eett_zh":
+                   #        for i in range(6,9):#partial blinding
+                   #              output.SetBinContent(i,-100)
                    #     if path=="eetCatLow" or path=="mmtCatLow" or path=="emtCatLow" or path=="eetCatHigh" or path=="mmtCatHigh" or path=="emtCatHigh":
                    #         for i in range(4,7):
                    #              output.SetBinContent(i,-100)
-                        if path=="ett" or path=="mtt":
-                            for i in range(4,7):
-                                 output.SetBinContent(i,-100)
+                   #     if path=="ett" or path=="mtt":
+                   #         for i in range(4,7):
+                   #              output.SetBinContent(i,-100)
     if scale is not None:
         output.Scale(scale)
     if title is not None:
@@ -292,7 +292,8 @@ if __name__ == "__main__":
 
     # MMT
     histograms['mmt'] = {}
-    mmt_channels = ['mmtCatHigh','mmtCatLow']
+    mmt_channels = ['mmtCatHigh','mmtCatLow'] #comment to plot MMT subcategories
+    #mmt_channels = ['mmtCatHigh'] # uncomment to plot MMT Cat High
 
     histograms['mmt']['wz'] = get_combined_histogram(
         'wz', mmt_channels, files_to_use_wh, title='WZ',
@@ -363,7 +364,8 @@ if __name__ == "__main__":
 
     # EMT
     histograms['emt'] = {}
-    emt_channels = ['emtCatHigh','emtCatLow']
+    emt_channels = ['emtCatHigh','emtCatLow']#comment to plot EMT sub catgeories
+    #emt_channels = ['emtCatHigh'] # uncomment to plot EMT Cat High
 
     histograms['emt']['wz'] = get_combined_histogram(
         'wz', emt_channels, files_to_use_wh, title='WZ',
@@ -414,8 +416,11 @@ if __name__ == "__main__":
 
     # EET
     histograms['eet'] = {}
-    eet_channels = ['eetCatHigh','eetCatLow']
-    eet_channels_flip = ['eetCatLow','eetCatHigh']
+    eet_channels = ['eetCatHigh','eetCatLow'] #comment to plot EET subcategories
+    eet_channels_flip = ['eetCatLow','eetCatHigh'] #comment to plot EET subcategories
+
+    #eet_channels = ['eetCatHigh'] #uncomment to plot EET Cat High
+    #eet_channels_flip = ['eetCatHigh'] #uncomment to plot EET Cat High
 
     histograms['eet']['wz'] = get_combined_histogram(
         'wz', eet_channels, files_to_use_wh, title='WZ',
@@ -777,8 +782,10 @@ if __name__ == "__main__":
         fix_maximum(histograms[channel])
         # We have to draw it so things like the axes are initialized.
         histograms[channel]['stack'].Draw()
-        histograms[channel]['stack'].GetYaxis().SetTitle(
-            "#bf{Events/%i GeV}" % histograms[channel]['data'].GetBinWidth(1))
+        #histograms[channel]['stack'].GetYaxis().SetTitle(
+        #    "#bf{Events/%i GeV}" % histograms[channel]['data'].GetBinWidth(1))	
+	histograms[channel]['stack'].GetYaxis().SetTitle(
+            "#bf{Events/ bin width [1/GeV]}" )
 	if channel=='lltt' or channel=="llet" or channel=="llmt" or channel=="llem":
            histograms[channel]['stack'].GetXaxis().SetTitle("#bf{m_{#tau#tau} [GeV]}")
 	else:
@@ -841,7 +848,7 @@ if __name__ == "__main__":
     histograms['mmt']['stack'].Draw()
     if args.prefit==False:
        errorMMT.Draw("e2same");
-    #histograms['mmt']['poisson'].Draw('pe same')
+    histograms['mmt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -852,7 +859,7 @@ if __name__ == "__main__":
     histograms['emt']['stack'].Draw()
     if args.prefit==False:
        errorEMT.Draw("e2same");
-    #histograms['emt']['poisson'].Draw('pe same')
+    histograms['emt']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)
@@ -863,7 +870,7 @@ if __name__ == "__main__":
     histograms['eet']['stack'].Draw()
     if args.prefit==False:
        errorEET.Draw("e2same");
-    #histograms['eet']['poisson'].Draw('pe same')
+    histograms['eet']['poisson'].Draw('pe same')
     catllt.Draw("same")
     histograms['mmt']['legend'].Draw()
     lumiBlurb=add_cms_blurb(sqrts, int_lumi)

@@ -6,7 +6,7 @@ TYPE=$1
 
 rm -f limits/$TYPE/.significance_computed
 
-limit.py --significance-frequentist --expectedOnly limits/$TYPE/*
+limit.py --significance-frequentist  limits/$TYPE/*
 touch limits/.significance_computed
 
 exit 0

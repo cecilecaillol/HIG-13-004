@@ -15,9 +15,9 @@
 #include "TPaveLabel.h"
 #include "TGraphAsymmErrors.h"
 
-#include "../HiggsAnalysis/HiggsToTauTau/macros/Utils.h"
-#include "../HiggsAnalysis/HiggsToTauTau/interface/HttStyles.h"
-#include "../HiggsAnalysis/HiggsToTauTau/src/HttStyles.cc"
+#include "/user_mnt/user/ccaillol/Limites_preapp_VH/CMSSW_6_1_1/src/HiggsAnalysis/HiggsToTauTau/macros/Utils.h"
+#include "/user_mnt/user/ccaillol/Limites_preapp_VH/CMSSW_6_1_1/src/HiggsAnalysis/HiggsToTauTau/interface/HttStyles.h"
+#include "/user_mnt/user/ccaillol/Limites_preapp_VH/CMSSW_6_1_1/src/HiggsAnalysis/HiggsToTauTau/src/HttStyles.cc"
 
 static const double MARKER_SIZE = 1.3;  // 0.7
 
@@ -62,19 +62,19 @@ void compareVHlimits(const char* filename, const char* channelstr, bool expected
   SetStyle();
 
   std::map<std::string, unsigned int> colors;
-  colors["vhtt_zh"      ] = kBlue;
-  colors["vhtt_wh_had"  ] = kRed;
-  colors["vhtt_wh"      ] = kGreen;
+  colors["vhtt_zh"      ] = kBlack;
+  colors["vhtt_wh_had"  ] = kBlack;
+  colors["vhtt_wh"      ] = kBlack;
   colors["cmb"          ] = kBlack;
   colors["mmt"          ] = kPink+7;
-  colors["emt"          ] = kOrange-3;
-  colors["eet"          ] = kGreen-3;
-  colors["llem"         ] = kAzure+1;
+  colors["emt"          ] = kGreen+2;
+  colors["eet"          ] = kViolet-6;
+  colors["llem"         ] = kGreen-1;
   colors["llet"         ] = kViolet-5;
   colors["llmt"         ] = kRed-4;
-  colors["lltt"         ] = kCyan+1;
+  colors["lltt"         ] = kCyan+3;
   colors["mtt"          ] = kViolet+5;
-  colors["ett"          ] = kAzure+5;
+  colors["ett"          ] = kBlue-4;
 
   std::cout << " *******************************************************************************************************\n"
 	    << " * Usage     : root -l                                                                                  \n"
