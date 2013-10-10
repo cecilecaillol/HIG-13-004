@@ -9,7 +9,7 @@ import math
 import os
 from poisson import convert
 from HttStyles import GetStyleHtt
-from HttStyles import MakeCanvas 
+from HttStyles import MakeCanvas
 import ROOT
 ROOT.gROOT.SetBatch(True)
 ROOT.gROOT.ProcessLine('.x tdrStyle.C')
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
     style1=GetStyleHtt()
     style1.cd()
-    
+
 
     parser = argparse.ArgumentParser()
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
            (False, '8TeV'): [postfit_8TeV_file_wh_had],
            (False, 'all'): [postfit_8TeV_file_wh_had, postfit_7TeV_file_wh_had],
        }
-    
+
        files_to_use_zh = files_to_use_map_zh[(args.prefit, args.period)]
        files_to_use_wh_had = files_to_use_map_wh_had[(args.prefit, args.period)]
        files_to_use_wh = files_to_use_map_wh[(args.prefit, args.period)]
@@ -257,92 +257,120 @@ if __name__ == "__main__":
         postfit_7TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_7TeV.root")
         postfit_8TeV_file = ROOT.TFile.Open(postfit_src + "/vhtt.input_8TeV.root")
         files_to_use_map = {
-                (True, '7TeV'): [prefit_7TeV_file],
-                (True, '8TeV'): [prefit_8TeV_file],
-                (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
-                (False, '7TeV'): [postfit_7TeV_file],
-                (False, '8TeV'): [postfit_8TeV_file],
-                (False, 'all'): [postfit_8TeV_file, postfit_7TeV_file],
+            (True, '7TeV'): [prefit_7TeV_file],
+            (True, '8TeV'): [prefit_8TeV_file],
+            (True, 'all'): [prefit_8TeV_file, prefit_7TeV_file],
+            (False, '7TeV'): [postfit_7TeV_file],
+            (False, '8TeV'): [postfit_8TeV_file],
+            (False, 'all'): [postfit_8TeV_file, postfit_7TeV_file],
         }
         files_to_use_zh = files_to_use_map[(args.prefit, args.period)]
         files_to_use_wh_had = files_to_use_map[(args.prefit, args.period)]
         files_to_use_wh = files_to_use_map[(args.prefit, args.period)]
 
-
     # Get all our histograms
     histograms = {}
 
+    # Map LLT subplots to different category combinations
+    all_llt_channels = ['emtCatLow', 'mmtCatLow', 'eetCatLow',
+                        'emtCatHigh', 'mmtCatHigh', 'eetCatHigh']
+    llt_subplots = {
+        'llt': all_llt_channels,
+        'llt_low': [x for x in all_llt_channels if 'Low' in x],
+        'llt_high': [x for x in all_llt_channels if 'Low' in x],
+        'mmt': [x for x in all_llt_channels if 'mmt' in x],
+        'emt': [x for x in all_llt_channels if 'emt' in x],
+        'eet': [x for x in all_llt_channels if 'eet' in x],
+        'mmt_low': ['mmtCatLow'],
+        'mmt_high': ['mmtCatHigh'],
+        'emt_low': ['emtCatLow'],
+        'emt_high': ['emtCatHigh'],
+        'eet_low': ['eetCatLow'],
+        'eet_high': ['eetCatHigh'],
+    }
+
     # LLT
-    histograms['llt'] = {}
-    #llt_channels = ['emtCatHigh','emtCatLow', 'mmtCatHigh','mmtCatLow','eetCatHigh','eetCatLow']
-    #llt_channels_flip = ['eetCatLow','eetCatHigh']
-    llt_channels = ['emtCatLow', 'mmtCatLow','eetCatLow']
-    llt_channels_flip = ['eetCatLow']
+    for lltsubset, channel_subset in llt_subplots.iteritems():
+        llt_plots = {}
+        histograms[lltsubset] = llt_plots
+        # only EET has charge flip background
+        channel_subset_flip = [x for x in channel_subset
+                               if 'eet' in channel_subset]
 
-    histograms['llt']['wz'] = get_combined_histogram(
-        'wz', llt_channels, files_to_use_wh, title='WZ',
-        style='wz'
-    )
-    histograms['llt']['zz'] = get_combined_histogram(
-        'zz', llt_channels, files_to_use_wh, title='ZZ',
-        style='zz'
-    )
-    histograms['llt']['fakes'] = get_combined_histogram(
-        'fakes', llt_channels, files_to_use_wh, title='Reducible bkg.', style='fakes'
-    )
-    histograms['llt']['charge_fakes'] = get_combined_histogram(
-        'charge_fakes', llt_channels_flip, files_to_use_wh, title='Reducible bkg. charge flip', style='charge_fakes'
-    )
-    histograms['llt']['signal'] = get_combined_histogram(
-        'WH125', llt_channels, files_to_use_wh,
-        title='m_{H}=125 GeV', style='signal',
-    )
-    histograms['llt']['hww'] = get_combined_histogram(
-        'WH_hww125', llt_channels, files_to_use_wh,
-        title='m_{H}=125 GeV', style='hww',
-    )
-    histograms['llt']['data'] = get_combined_histogram(
-        'data_obs', llt_channels, files_to_use_wh,
-        title='data', style='data'
-    )
-    def make_legend():
-        output = ROOT.TLegend(0.55, 0.65, 0.90, 0.90, "", "brNDC")
-        output.SetLineWidth(0)
-        output.SetLineStyle(0)
-        output.SetFillStyle(0)
-        output.SetBorderSize(0)
-        return output
-    histograms['llt']['stack'] = ROOT.THStack("llt_stack", "llt_stack")
-    histograms['llt']['stack'].Add(histograms['llt']['charge_fakes'], 'hist')
-    histograms['llt']['stack'].Add(histograms['llt']['fakes'], 'hist')
-    histograms['llt']['stack'].Add(histograms['llt']['zz'], 'hist')
-    histograms['llt']['stack'].Add(histograms['llt']['wz'], 'hist')
-    histograms['llt']['stack'].Add(histograms['llt']['hww'], 'hist')
+        llt_plots['wz'] = get_combined_histogram(
+            'wz', channel_subset, files_to_use_wh, title='WZ',
+            style='wz'
+        )
+        llt_plots['zz'] = get_combined_histogram(
+            'zz', channel_subset, files_to_use_wh, title='ZZ',
+            style='zz'
+        )
+        llt_plots['fakes'] = get_combined_histogram(
+            'fakes', channel_subset, files_to_use_wh, title='Reducible bkg.',
+            style='fakes'
+        )
+        if channel_subset_flip:
+            llt_plots['charge_fakes'] = get_combined_histogram(
+                'charge_fakes', channel_subset_flip, files_to_use_wh,
+                title='Reducible bkg. charge flip', style='charge_fakes'
+            )
+        llt_plots['signal'] = get_combined_histogram(
+            'WH125', channel_subset, files_to_use_wh,
+            title='m_{H}=125 GeV', style='signal',
+        )
+        llt_plots['hww'] = get_combined_histogram(
+            'WH_hww125', channel_subset, files_to_use_wh,
+            title='m_{H}=125 GeV', style='hww',
+        )
+        llt_plots['data'] = get_combined_histogram(
+            'data_obs', channel_subset, files_to_use_wh,
+            title='data', style='data'
+        )
+        def make_legend():
+            output = ROOT.TLegend(0.55, 0.65, 0.90, 0.90, "", "brNDC")
+            output.SetLineWidth(0)
+            output.SetLineStyle(0)
+            output.SetFillStyle(0)
+            output.SetBorderSize(0)
+            return output
+        llt_plots['stack'] = ROOT.THStack("llt_stack", "llt_stack")
+        if channel_subset_flip:
+            llt_plots['stack'].Add(llt_plots['charge_fakes'], 'hist')
+        llt_plots['stack'].Add(llt_plots['fakes'], 'hist')
+        llt_plots['stack'].Add(llt_plots['zz'], 'hist')
+        llt_plots['stack'].Add(llt_plots['wz'], 'hist')
+        llt_plots['stack'].Add(llt_plots['hww'], 'hist')
 
-    errorLLT=histograms['llt']['zz'].Clone()
-    errorLLT.SetFillStyle(3013)
-    errorLLT.Add(histograms['llt']['fakes'])
-    errorLLT.Add(histograms['llt']['charge_fakes'])
-    errorLLT.Add(histograms['llt']['wz'])
-    errorLLT.Add(histograms['llt']['hww'])
-    errorLLT.SetMarkerSize(0)
-    errorLLT.SetFillColor(1)
-    errorLLT.SetLineWidth(1)
+        errorLLT = llt_plots['zz'].Clone()
+        errorLLT.SetFillStyle(3013)
+        errorLLT.Add(llt_plots['fakes'])
+        if channel_subset_flip:
+            errorLLT.Add(llt_plots['charge_fakes'])
+        errorLLT.Add(llt_plots['wz'])
+        errorLLT.Add(llt_plots['hww'])
+        errorLLT.SetMarkerSize(0)
+        errorLLT.SetFillColor(1)
+        errorLLT.SetLineWidth(1)
+        llt_plots['error'] = errorLLT
 
-    histograms['llt']['stack'].Add(histograms['llt']['signal'], 'hist')
+        llt_plots['stack'].Add(llt_plots['signal'], 'hist')
 
-    histograms['llt']['legend'] = make_legend()
-    histograms['llt']['legend'].AddEntry(histograms['llt']['signal'],
-                                         "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['data'],
-                                         "#bf{observed}", "lp")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['hww'], "#bf{VH(125 GeV)#rightarrow VWW}", "f")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['wz'], "#bf{WZ}", "f")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['zz'], "#bf{ZZ}", "f")
-    histograms['llt']['legend'].AddEntry(histograms['llt']['fakes'],
-                                         "#bf{reducible bkg.}", "f")
-    if args.prefit==False:
-       histograms['llt']['legend'].AddEntry(errorLLT, "#bf{bkg. uncertainty}", "f")
+        llt_plots['legend'] = make_legend()
+        llt_plots['legend'].AddEntry(
+            llt_plots['signal'],
+            "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
+        llt_plots['legend'].AddEntry(
+            llt_plots['data'],
+            "#bf{observed}", "lp")
+        llt_plots['legend'].AddEntry(llt_plots['hww'],
+                                     "#bf{VH(125 GeV)#rightarrow VWW}", "f")
+        llt_plots['legend'].AddEntry(llt_plots['wz'], "#bf{WZ}", "f")
+        llt_plots['legend'].AddEntry(llt_plots['zz'], "#bf{ZZ}", "f")
+        llt_plots['legend'].AddEntry(llt_plots['fakes'],
+                                     "#bf{reducible bkg.}", "f")
+        if not args.prefit:
+            llt_plots['legend'].AddEntry(
+                errorLLT, "#bf{bkg. uncertainty}", "f")
 
     # ZH
     histograms['zh'] = {}
@@ -381,15 +409,15 @@ if __name__ == "__main__":
     histograms['zh']['stack'].Add(histograms['zh']['zz'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['hww'], 'hist')
     histograms['zh']['stack'].Add(histograms['zh']['signal'], 'hist')
-    
+
     errorZH=histograms['zh']['zz'].Clone()
     errorZH.SetFillStyle(3013)
     errorZH.Add(histograms['zh']['fakes'])
     errorZH.Add(histograms['zh']['hww'])
-    errorZH.SetMarkerSize(0) 
+    errorZH.SetMarkerSize(0)
     errorZH.SetFillColor(1)
     errorZH.SetLineWidth(1)
-    
+
     histograms['zh']['legend'] = make_legend()
     histograms['zh']['legend'].AddEntry(histograms['zh']['signal'],
                                         "#bf{VH(125 GeV)#rightarrow V#tau#tau}", "l")
@@ -440,7 +468,7 @@ if __name__ == "__main__":
     errorLTT.SetFillStyle(3013)
     errorLTT.Add(histograms['ltt']['fakes'])
     errorLTT.Add(histograms['ltt']['wz'])
-    errorLTT.SetMarkerSize(0) 
+    errorLTT.SetMarkerSize(0)
     errorLTT.SetFillColor(1)
     errorLTT.SetLineWidth(1)
 
@@ -457,7 +485,7 @@ if __name__ == "__main__":
        histograms['ltt']['legend'].AddEntry(errorLTT,"#bf{bkg. uncertainty}","F")
 
     # Apply some styles to all the histograms
-    for channel in ['llt', 'zh', 'ltt']:
+    for channel in histograms.keys():
     #for channel in ['zh']:
         # Use Poissonian error bars. The set_zero_bins makes it so bins w/o
         # any data are blank.
@@ -483,7 +511,7 @@ if __name__ == "__main__":
 	'FitByChannel' if args.MLfit=="channel" else 'FitAllChannels'
     )
 
-    catllt      = ROOT.TPaveText(0.20, 0.71+0.061, 0.32, 0.71+0.161, "NDC");
+    catllt = ROOT.TPaveText(0.20, 0.71+0.061, 0.32, 0.71+0.161, "NDC");
     catllt.SetBorderSize(   0 );
     catllt.SetFillStyle(    0 );
     catllt.SetTextAlign(   12 );
@@ -518,17 +546,19 @@ if __name__ == "__main__":
     }
     int_lumi, sqrts = blurb_map[args.period]
 
-    canvas=MakeCanvas("asdf","asdf",800,800)
+    canvas = MakeCanvas("asdf","asdf",800,800)
 
-    histograms['llt']['stack'].Draw()
-    if args.prefit==False:
-       errorLLT.Draw("e2same");
-    histograms['llt']['poisson'].Draw('pe same')
-    catllt.Draw("same")
-    histograms['llt']['legend'].Draw()
-    lumiBlurb=add_cms_blurb(sqrts, int_lumi)
-    lumiBlurb.Draw("same")
-    canvas.SaveAs('plots/llt_Low' + plot_suffix)
+    for llt_key in llt_subplots:
+        print "Plotting: ", llt_key
+        histograms[llt_key]['stack'].Draw()
+        if not args.prefit:
+            histograms[llt_key]['error'].Draw("e2same")
+        histograms[llt_key]['poisson'].Draw('pe same')
+        catllt.Draw("same")
+        histograms[llt_key]['legend'].Draw()
+        lumiBlurb = add_cms_blurb(sqrts, int_lumi)
+        lumiBlurb.Draw("same")
+        canvas.SaveAs('plots/' + llt_key + plot_suffix)
 
     histograms['zh']['stack'].Draw()
     if args.prefit==False:
