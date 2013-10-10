@@ -108,7 +108,9 @@ if __name__ == "__main__":
     translator = {
         'mmt': "#mu#mu#tau",
         'mmt_8TeV': "#mu#mu#tau 8TeV",
-        'mmt_7TeV': "#mu#mu#tau 8TeV",
+        'mmt_7TeV': "#mu#mu#tau 7TeV",
+        'mmt_8TeV_high': "#mu#mu#tau 8TeV high",
+        'mmt_8TeV_low': "#mu#mu#tau 8TeV low",
         'emt': "e#mu#tau",
         'eet': "ee#tau",
         'mtt': "#mu#tau#tau",
