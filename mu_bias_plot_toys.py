@@ -50,12 +50,14 @@ if __name__ == "__main__":
 
     min_value = min(real_fit_val, min(toy_results))
     max_value = max(real_fit_val, max(toy_results))
+    toy_min_value = min(toy_results)
+    toy_max_value = max(toy_results)
 
     width = max_value - min_value
+    toy_width = toy_max_value- toy_min_value
 
     toy_hist = ROOT.TH1F("toys", "toys", 100,
                          min_value - width / 10, max_value + width / 10)
-
 
     below = 0
 
@@ -76,15 +78,10 @@ if __name__ == "__main__":
 
     line = ROOT.TLine(real_fit_val, 0, real_fit_val, toy_hist.GetMaximum())
     line.SetLineColor(ROOT.EColor.kRed)
-
     line.SetLineWidth(2)
-
     box = ROOT.TBox(real_fit_val_low, 0,
                     real_fit_val_high, toy_hist.GetMaximum())
     box.SetFillColor(ROOT.EColor.kRed - 10)
-    box.Draw()
-    line.Draw()
-
     # for the legend style
     box_copy = box.Clone()
     box_copy.SetLineColor(ROOT.EColor.kRed)
@@ -110,6 +107,7 @@ if __name__ == "__main__":
         'mmt_8TeV': "#mu#mu#tau 8TeV",
         'mmt_7TeV': "#mu#mu#tau 7TeV",
         'mmt_8TeV_high': "#mu#mu#tau 8TeV high",
+        'mmt_8TeV_highscaled': "#mu#mu#tau 8TeV high (x10)",
         'mmt_8TeV_low': "#mu#mu#tau 8TeV low",
         'emt': "e#mu#tau",
         'eet': "ee#tau",
@@ -127,5 +125,17 @@ if __name__ == "__main__":
     channel.Draw()
 
     legend.Draw()
+
+    toy_hist.GetXaxis().SetRangeUser(
+        toy_min_value - toy_width / 10.,
+        toy_max_value - toy_width / 10.)
+
+    canvas.SaveAs("toys_only_" + args.plot)
+
+    toy_hist.GetXaxis().SetRangeUser(min_value, max_value)
+
+    #box.Draw()
+    line.Draw()
+    toy_hist.Draw('same')
 
     canvas.SaveAs(args.plot)
