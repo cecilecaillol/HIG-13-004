@@ -43,10 +43,17 @@ if __name__ == "__main__":
             real_fit_val_high = row.limit
 
     toy_results = []
+    toy_low_results = []
+    toy_high_results = []
     # Now get all the toys
     for i, row in enumerate(toys):
         if i % 4 == 0:
             toy_results.append(row.limit)
+        if i % 4 == 1:
+            toy_low_results.append(toy_results[-1] - row.limit)
+        if i % 4 == 2:
+            toy_high_results.append(row.limit - toy_results[-1])
+
 
     min_value = min(real_fit_val, min(toy_results))
     max_value = max(real_fit_val, max(toy_results))
@@ -58,16 +65,22 @@ if __name__ == "__main__":
 
     toy_hist = ROOT.TH1F("toys", "toys", 100,
                          min_value - width / 10, max_value + width / 10)
+    toy_pulls = ROOT.TH1F("toys_pulls", "toys_pulls", 100, -5, 5)
 
     below = 0
 
     toy_results.sort()
     median = toy_results[len(toy_results) / 2]
 
-    for toy in toy_results:
+    for toy, low, high in zip(toy_results, toy_low_results, toy_high_results):
         if toy < real_fit_val:
             below += 1
         toy_hist.Fill(toy)
+        if toy < 1:
+            toy_pulls.Fill((toy - 1) / abs(high))
+        if toy > 1:
+            toy_pulls.Fill((toy - 1) / abs(low))
+    toy_pulls.Fit("gaus")
 
     toy_hist.Draw()
     toy_hist.SetLineWidth(2)
@@ -139,3 +152,11 @@ if __name__ == "__main__":
     toy_hist.Draw('same')
 
     canvas.SaveAs(args.plot)
+
+    toy_pulls.Draw()
+    toy_pulls.SetLineWidth(2)
+
+    toy_pulls.GetXaxis().SetTitle("signal strength pull (#mu - 1)/#sigma")
+    toy_pulls.SetMinimum(0)
+    toy_pulls.SetMaximum(toy_pulls.GetMaximum() * 2)
+    canvas.SaveAs("pulls_" + args.plot)
