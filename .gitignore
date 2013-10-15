@@ -1,1 +1,13 @@
 condor_toys*
+higgsCombine*root
+limit_hash_*
+combine
+*.d
+*.pdf
+*.tex
+*.txt
+*.root
+.*computed
+*.out
+*.eps
+*.png
