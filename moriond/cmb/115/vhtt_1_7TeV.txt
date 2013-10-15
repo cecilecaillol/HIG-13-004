@@ -1,0 +1,80 @@
+imax    8     number of categories 
+
+jmax    3     number of samples minus one 
+
+kmax    *     number of nuisance parameters 
+
+------------------------------------------------------------------------------- 
+
+shapes * * ../common/vhtt.input_7TeV.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC 
+
+shapes data_obs * ../common/vhtt.input_7TeV_222_0.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC
+shapes ZH_htt * ../common/vhtt.input_7TeV.root $CHANNEL/$PROCESS$MASS $CHANNEL/$PROCESS$MASS_$SYSTEMATIC 
+
+shapes ZH_hww * ../common/vhtt.input_7TeV.root $CHANNEL/$PROCESS$MASS $CHANNEL/$PROCESS$MASS_$SYSTEMATIC 
+
+------------------------------------------------------------------------------- 
+
+bin                                             mmmt_zh     mmet_zh     mmme_zh     mmtt_zh     eemt_zh     eeet_zh     eeem_zh     eett_zh      
+
+observation 1 -2147483648 2 1 -2147483648 -2147483648 3 1
+------------------------------------------------------------------------------- 
+
+bin                                             mmmt_zh     mmmt_zh     mmmt_zh     mmmt_zh     mmet_zh     mmet_zh     mmet_zh     mmet_zh     mmme_zh     mmme_zh     mmme_zh     mmme_zh     mmtt_zh     mmtt_zh     mmtt_zh     mmtt_zh     eemt_zh     eemt_zh     eemt_zh     eemt_zh     eeet_zh     eeet_zh     eeet_zh     eeet_zh     eeem_zh     eeem_zh     eeem_zh     eeem_zh     eett_zh     eett_zh     eett_zh     eett_zh      
+
+process                                         -1          0           1           2           -1          0           1           2           -1          0           1           2           -1          0           1           2           -1          0           1           2           -1          0           1           2           -1          0           1           2           -1          0           1           2            
+
+process                                         ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets       ZH_htt      ZH_hww      ZZ          Zjets        
+
+rate                                            0.117668    0.00376701  1.0124        0.41      0.0824798   0.00176139  0.726949      0.54      0.0631143   0.0445263   0.705162      0.13      0.0875796        0      0.594085      0.31      0.109913    0.00339911  0.79976       0.31      0.0720956   0.00161049  0.74999       0.55      0.0675388   0.0402087   0.621521      0.26      0.0477765        0      0.500538      0.22       
+
+------------------------------------------------------------------------------- 
+
+lumi_7TeV lnN                                   1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -           1.022       1.022       1.022       -            
+
+CMS_eff_e lnN                                   -           -           -           -           1.04        1.04        1.040       -           1.06        1.06        1.060       -           -           -           -           -           1.04        1.04        1.040       -           1.06        1.06        1.060       -           1.06        1.06        1.060       -           1.04        1.04        1.040       -            
+
+CMS_eff_m lnN                                   1.06        1.06        1.060       -           1.02        1.02        1.020       -           1.02        1.02        1.020       -           1.04        1.04        1.040       -           1.02        1.02        1.020       -           -           -           -           -           1.02        1.02        1.020       -           -           -           -           -            
+
+CMS_eff_t lnN                                   1.06        1.06        1.060       -           1.06        1.06        1.060       -           -           -           -           -           1.12        1.12        1.120       -           1.06        1.06        1.060       -           1.06        1.06        1.060       -           -           -           -           -           1.12        1.12        1.120       -            
+
+CMS_scale_e lnN                                 -           -           -           -           1.02        1.02        1.020       -           1.03        1.03        1.030       -           -           -           -           -           1.02        1.02        1.020       -           1.03        1.03        1.030       -           1.03        1.03        1.030       -           1.02        1.02        1.020       -            
+
+CMS_scale_m lnN                                 1.03        1.03        1.030       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.02        1.02        1.020       -           1.01        1.01        1.010       -           -           -           -           -           1.01        1.01        1.010       -           -           -           -           -            
+
+CMS_scale_t lnN                                 1.03        1.03        1.030       -           1.03        1.03        1.030       -           -           -           -           -           1.03        1.03        1.030       -           1.03        1.03        1.030       -           1.03        1.03        1.030       -           -           -           -           -           1.03        1.03        1.030       -            
+
+CMS_trigger_e lnN                               -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -            
+
+CMS_trigger_m lnN                               1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -            
+
+CMS_fake_b lnN                                  1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -           1.01        1.01        1.010       -            
+
+CMS_vhtt_ZZ lnN                                 -           -           1.023       -           -           -           1.023       -           -           -           1.023       -           -           -           1.023       -           -           -           1.023       -           -           -           1.023       -           -           -           1.023       -           -           -           1.023       -            
+
+pdf_qqbar lnN                                   1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -           1.034       1.034       1.034       -            
+
+QCDscale_VH lnN                                 1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -           1.004       1.004       -           -            
+
+CMS_zh2l2tau_ZZBkg_extrap lnN                   -           -           1.100       -           -           -           1.100       -           -           -           1.100       -           -           -           1.100       -           -           -           1.100       -           -           -           1.100       -           -           -           1.100       -           -           -           1.100       -            
+
+CMS_zh2l2tau_ZjetBkg_emu_extrap_7TeV lnN        -           -           -           1.300       -           -           -           1.300       -           -           -           1.300       -           -           -           -           -           -           -           1.300       -           -           -           1.300       -           -           -           1.300       -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkg_tau_extrap_7TeV lnN        -           -           -           1.200       -           -           -           1.200       -           -           -           -           -           -           -           1.200       -           -           -           1.200       -           -           -           1.200       -           -           -           -           -           -           -           1.200        
+
+CMS_zh2l2tau_ZjetBkgEEEM_7TeV gmN 7             -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           0.037143    -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgEEET_7TeV gmN 27            -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           0.020370    -           -           -           -           -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgEEMT_7TeV gmN 6             -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           0.051667    -           -           -           -           -           -           -           -           -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgEETT_7TeV gmN 22            -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           0.010000     
+
+CMS_zh2l2tau_ZjetBkgMMET_7TeV gmN 32            -           -           -           -           -           -           -           0.016875    -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgMMME_7TeV gmN 4             -           -           -           -           -           -           -           -           -           -           -           0.032500    -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgMMMT_7TeV gmN 10            -           -           -           0.041000    -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -            
+
+CMS_zh2l2tau_ZjetBkgMMTT_7TeV gmN 30            -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           0.010333    -           -           -           -           -           -           -           -           -           -           -           -           -           -           -           -            
+

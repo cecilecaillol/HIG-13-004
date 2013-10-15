@@ -1,0 +1,46 @@
+imax    2     number of categories 
+jmax    4     number of samples minus one 
+kmax    *     number of nuisance parameters 
+------------------------------------------------------------------------------- 
+shapes * * ../common/vhtt.input_8TeV.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC 
+shapes WH * ../common/vhtt.input_8TeV.root $CHANNEL/$PROCESS$MASS $CHANNEL/$PROCESS$MASS_$SYSTEMATIC 
+shapes WH_hww * ../common/vhtt.input_8TeV.root $CHANNEL/$PROCESS$MASS $CHANNEL/$PROCESS$MASS_$SYSTEMATIC 
+------------------------------------------------------------------------------- 
+bin                                               mmt         emt          
+observation                                       17          37           
+------------------------------------------------------------------------------- 
+bin                                               mmt         mmt         mmt         mmt         mmt         emt         emt         emt         emt         emt          
+process                                           -1          0           1           2           3           -1          0           1           2           3            
+process                                           WH          WH_hww      wz          zz          fakes       WH          WH_hww      wz          zz          fakes        
+rate                                              0.787363    0.319643    12.1914     0.78659     11.2627     1.01311     0.408305    16.4401     1.19675     11.9117      
+------------------------------------------------------------------------------- 
+lumi_8TeV lnN                                     1.042       1.042       1.042       1.042       -           1.042       1.042       1.042       1.042       -            
+CMS_eff_e lnN                                     -           -           -           -           -           1.02        1.02        1.020       1.020       -            
+CMS_eff_m lnN                                     1.02        1.02        1.020       1.020       -           1.01        1.01        1.010       1.010       -            
+CMS_eff_t lnN                                     1.08        1.08        1.080       1.080       -           1.08        1.08        1.080       1.080       -            
+CMS_fake_b_8TeV lnN                               1.01        1.01        1.010       1.010       -           1.01        1.01        1.010       1.010       -            
+CMS_scale_t lnN                                   1.03        1.03        1.030       1.030       -           1.03        1.03        1.030       1.030       -            
+CMS_vhtt_emt_fakes_8TeV lnN                       -           -           -           -           -           -           -           -           -           1.150        
+CMS_vhtt_mmt_fakes_8TeV lnN                       -           -           -           -           1.380       -           -           -           -           -            
+pdf_qqbar lnN                                     1.034       1.034       1.040       1.033       -           1.034       1.034       1.040       1.033       -            
+QCDscale_VH lnN                                   1.004       1.004       -           -           -           1.004       1.004       -           -           -            
+QCDscale_VV lnN                                   -           -           1.040       1.023       -           -           -           1.040       1.023       -            
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_1 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_2 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_3 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_4 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_5 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_6 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_7 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_8 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_9 shape     -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_emt_fakeshape_fakes_bin_10 shape    -           -           -           -           -           -           -           -           -           1.000        
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_1 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_2 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_3 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_4 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_5 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_6 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_7 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_8 shape     -           -           -           -           1.000       -           -           -           -           -            
+CMS_vhtt_8TeV_mmt_fakeshape_fakes_bin_9 shape     -           -           -           -           1.000       -           -           -           -           -            
