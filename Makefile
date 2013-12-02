@@ -72,7 +72,7 @@ $(CARDS)/.llt7_timestamp: $(SHAPEFILE7) $(LLT_CONFIGS7)
 	rm -f $@
 	# change to base, run the setup command, and touch the .timestamp if 
 	# successful
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:00,01:fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:00,01:fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "0 1" && touch $@
 
 $(CARDS)/.llt8_timestamp: $(SHAPEFILE8) $(LLT_CONFIGS8)
 	@echo "Recipes for building EET, EMT and MMT cards 8TeV"
@@ -80,10 +80,10 @@ $(CARDS)/.llt8_timestamp: $(SHAPEFILE8) $(LLT_CONFIGS8)
 	rm -f $(CARDS)/vhtt_1_8TeV*
 	rm -f $(CARDS)/vhtt_2_8TeV*
 	rm -f $@
-	cd $(BASE) &&  $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:00,01,02:fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:01,02:charge_fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "0 1 2" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:00:fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:01:charge_fakes>fakes' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "0 1" && touch $@
 
-#llt: $(CARDS)/.llt7_timestamp $(CARDS)/.llt8_timestamp
-llt: $(CARDS)/.llt8_timestamp
+llt: $(CARDS)/.llt7_timestamp $(CARDS)/.llt8_timestamp
+#llt: $(CARDS)/.llt8_timestamp
 
 ################################################################################
 #####  Recipes for building ZH cards ###########################################
@@ -100,7 +100,7 @@ $(CARDS)/.zh7_timestamp: $(SHAPEFILE7) $(ZH_CONFIGS7)
 	rm -f $(CARDS)/vhtt_5_7TeV*
 	rm -f $(CARDS)/vhtt_6_7TeV*
 	rm -f $@
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
 
 $(CARDS)/.zh8_timestamp: $(SHAPEFILE8) $(ZH_CONFIGS8)
 	@echo "Recipes for building ZH cards 8TeV"
@@ -109,7 +109,7 @@ $(CARDS)/.zh8_timestamp: $(SHAPEFILE8) $(ZH_CONFIGS8)
 	rm -f $(CARDS)/vhtt_5_8TeV*
 	rm -f $(CARDS)/vhtt_6_8TeV*
 	rm -f $@
-	cd $(BASE)  && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
+	cd $(BASE)  && $(WD)/add_bbb_errors_VH.py -f 'vhtt:8TeV:03,04,05,06:Zjets' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "3 4 5 6" && touch $@
 
 zh: $(CARDS)/.zh7_timestamp $(CARDS)/.zh8_timestamp
 #zh: $(CARDS)/.zh8_timestamp
@@ -127,7 +127,7 @@ $(CARDS)/.ltt7_timestamp: $(SHAPEFILE7) $(LTT_CONFIGS7)
 	rm -f $(CARDS)/vhtt_7_7TeV*
 	rm -f $(CARDS)/vhtt_8_7TeV*
 	rm -f $@
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:07,08:wz' -i $(SETUP1) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "7 8" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py -f 'vhtt:7TeV:07,08:wz' -i $(SETUP1) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 7TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "7 8" && touch $@
 
 $(CARDS)/.ltt8_timestamp: $(SHAPEFILE8) $(LTT_CONFIGS8)
 	@echo "Recipes for building LTT cards 8TeV"
@@ -135,7 +135,7 @@ $(CARDS)/.ltt8_timestamp: $(SHAPEFILE8) $(LTT_CONFIGS8)
 	rm -f $(CARDS)/vhtt_8_8TeV*
 	rm -f $@
 	cp $(SETUP1)/vhtt/vhtt.inputs-sm-8TeV.root $(SETUPBBB)/vhtt/.
-	cd $(BASE) && $(WD)/add_bbb_errors_VH.py  -f 'vhtt:8TeV:07,08:wz' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 110-145:5 -c vhtt --sm-categories-vhtt "7 8" && touch $@
+	cd $(BASE) && $(WD)/add_bbb_errors_VH.py  -f 'vhtt:8TeV:07,08:wz' -i $(SETUPBBB) -o $(SETUPBBB) --threshold 0.10 --normalize && setup-datacards.py -i $(SETUPBBB) -p 8TeV --a sm 90-145:5 -c vhtt --sm-categories-vhtt "7 8" && touch $@
 
 ltt: $(CARDS)/.ltt7_timestamp $(CARDS)/.ltt8_timestamp
 #ltt: $(CARDS)/.ltt8_timestamp
@@ -149,11 +149,8 @@ cards: zh ltt llt
 $(LIMITDIR)/.timestamp:  $(CARDS)/.ltt7_timestamp $(CARDS)/.ltt8_timestamp\
   $(CARDS)/.zh7_timestamp $(CARDS)/.zh8_timestamp\
   $(CARDS)/.llt7_timestamp $(CARDS)/.llt8_timestamp
-#$(LIMITDIR)/.timestamp:  $(CARDS)/.ltt8_timestamp\
-  $(CARDS)/.zh8_timestamp\
-  $(CARDS)/.llt8_timestamp
 	rm -rf $(LIMITDIR)
-	cd $(BASE) && $(WD)/setup_htt_channels.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && setup-htt.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 2 3 4 5 6 7 8" 110-145:5 && touch $@
+	cd $(BASE) && $(WD)/setup_htt_channels.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 3 4 5 6 7 8" 90-145:5 && setup-htt.py -o $(LIMITDIR) -c vhtt --sm-categories-vhtt "0 1 3 4 5 6 7 8" 90-145:5 && touch $@
 
 limitdir: $(LIMITDIR)/.timestamp
 
@@ -177,8 +174,6 @@ megacard_125.txt: $(LIMITDIR)/.timestamp
         zh_3_8TeV=$(LIMITDIR)/cmb/125/vhtt_3_8TeV.txt \
         llt_0_7TeV=$(LIMITDIR)/cmb/125/vhtt_0_7TeV.txt \
 	llt_0_8TeV=$(LIMITDIR)/cmb/125/vhtt_0_8TeV.txt \
-	llt_2_7TeV=$(LIMITDIR)/cmb/125/vhtt_2_7TeV.txt \
-        llt_2_8TeV=$(LIMITDIR)/cmb/125/vhtt_2_8TeV.txt \
         llt_1_7TeV=$(LIMITDIR)/cmb/125/vhtt_1_7TeV.txt \
         llt_1_8TeV=$(LIMITDIR)/cmb/125/vhtt_1_8TeV.txt > $@
 	
@@ -224,7 +219,6 @@ $(LIMITDIR)/.chan_computed: $(LIMITDIR)/.timestamp
 	echo "Computing LLT limits"
 	./compute_limits.sh mmt $(NPROCS)
 	./compute_limits.sh emt $(NPROCS)
-	./compute_limits.sh eet $(NPROCS)
 	touch $@
 
 limits: $(LIMITDIR)/.computed $(LIMITDIR)/.chan_computed
@@ -236,12 +230,6 @@ limits: $(LIMITDIR)/.computed $(LIMITDIR)/.chan_computed
 $(LIMITDIR)/.computed_signif: $(LIMITDIR)/.timestamp
 	echo "Computing combined significance"
 	./compute_significance.sh cmb 
-	#echo "Computing ZH significance"
-	#./compute_significance.sh vhtt_zh 
-	#echo "Computing LTT significance"
-	#./compute_significance.sh vhtt_wh_had 
-	#echo "Computing LLT significance"
-	#./compute_significance.sh vhtt_wh 
 	touch $@
 
 significance: $(LIMITDIR)/.computed_signif
@@ -259,22 +247,14 @@ comparemacro: $(BASE)/HiggsAnalysis/HiggsToTauTau/macros/compareLimits_C.so
 
 $(LIMITDIR)/.plot_timestamp: $(LIMITDIR)/.computed $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
-	##cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py llt/ 
-	##cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py 4l/ 
-	##cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py ltt/ max=50 
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py cmb/ 
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py vhtt_zh/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_zh/
-	#cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_zh_llll/
-	#cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_zh_lllt/
-	#cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_zh_lltt/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_wh/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py vhtt_wh/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py vhtt_wh_had/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py vhtt_wh_had/
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
-	#cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ltt/ max=25 
-	#cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/ 
 	# Combine the output of all the individual limit results into a single file.
 	rm -f $(LIMITDIR)/limits_limit.root 
 	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*h_limit.root $(LIMITDIR)/*b_limit.root $(LIMITDIR)/*d_limit.root
@@ -311,7 +291,6 @@ $(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalys
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py lltt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mmt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py emt/ max=40.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py eet/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py mtt/ max=30.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py ett/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py llem/ max=40.0
@@ -320,19 +299,18 @@ $(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalys
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py lltt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py mmt/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py emt/ max=40.0
-	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py eet/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py mtt/ max=30.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_layout.py ett/ max=40.0
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
 	rm -f $(LIMITDIR)/limits_limit.root 
 	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*h_limit.root $(LIMITDIR)/*t_limit.root $(LIMITDIR)/*m_limit.root $(LIMITDIR)/*b_limit.root $(LIMITDIR)/*d_limit.root
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "vhtt_wh_had,vhtt_zh,vhtt_wh,cmb", true, false, "sm-xsex", 0, 20, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "vhtt_wh_had,vhtt_zh,vhtt_wh,cmb", true, false, "sm-xsex", 0, 20, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_ZH_WH.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "ett,mtt,vhtt_wh_had", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "ett,mtt,vhtt_wh_had", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_wh_had.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "eet,mmt,emt,vhtt_wh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "mmt,emt,vhtt_wh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_wh_lep.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "llem,llet,lltt,llmt,vhtt_zh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24.7 fb^{-1}",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "llem,llet,lltt,llmt,vhtt_zh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_zh.pdf
 	touch $@
 
@@ -350,27 +328,12 @@ plotlimits: plots/.limits_timestamp plots/.chan_limits_timestamp
 
 $(LIMITDIR)/.plot_signif_timestamp: $(LIMITDIR)/.computed_signif $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_*.py
 	rm -f $@
-	#cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_zh/ 
-	#cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh/ 
-	#cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py vhtt_wh_had/ expectedOnly=True
 	cd $(LIMITDIR) && plot --significance-frequentist $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_significance_layout.py cmb/ 
-	# Combine the output of all the individual limit results into a single file.
-	#rm -f $(LIMITDIR)/limits_significance.root 
-	#hadd $(LIMITDIR)/limits_significance.root $(LIMITDIR)/*_significance.root
-	##cd $(LIMITDIR) && root -b -q '../../HiggsAnalysis/HiggsToTauTau/macros/compareLimits.C+("limits_limit.root", "cmb,vhtt_zh,vhtt_wh_had,vhtt_wh", true, false, "sm-xsex", 0, 25, false,"  Preliminary, VH#rightarrow#tau#tau, #sqrt{s} = 7-8 TeV, L=24 fb^{-1}")'
 	touch $@
 
 plots/.significances_timestamp: $(LIMITDIR)/.plot_signif_timestamp
-	#mkdir -p plots
-	#cp $(LIMITDIR)/vhtt_zh_significance.pdf plots/
-	#cp $(LIMITDIR)/vhtt_zh_significance.tex plots/
-	#cp $(LIMITDIR)/vhtt_wh_significance.tex plots/
-	#cp $(LIMITDIR)/vhtt_wh_significance.pdf plots/
-	#cp $(LIMITDIR)/vhtt_wh_had_significance.pdf plots/
-	#cp $(LIMITDIR)/vhtt_wh_had_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.tex plots/
 	cp $(LIMITDIR)/cmb_significance.pdf plots/
-	#cp $(LIMITDIR)/singleLimits_expected_sm.pdf plots/exp_limit_breakdown.pdf
 	touch $@
 
 plotsignificances: plots/.significances_timestamp
@@ -384,6 +347,7 @@ plotsignificances: plots/.significances_timestamp
 $(HTT_TEST)/.fit_timestamp: $(LIMITDIR)/.timestamp
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/cmb/125 && touch $@
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_vh.txt
+	prune-uncerts-htt.py --fit-results='$(WD)/limits/cmb/125/out/mlfit.txt' --threshold=0.10 --whitelist='_bin_' limits/cmb/125 --shielding 125:0.3 && sh pruning.sh
 
 # Make .root files with the applied pulls
 $(HTT_TEST)/root_postfit/.timestamp: $(HTT_TEST)/.fit_timestamp
@@ -429,17 +393,11 @@ $(HTT_TEST)/root_postfit/.timestamp: $(HTT_TEST)/.fit_timestamp
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_1_8TeV.txt \
           --bins emtCatHigh emtCatLow \
 	  --verbose
-	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_2_8TeV.txt \
-          --bins eetCatHigh eetCatLow \
-	  --verbose
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_0_7TeV.txt \
-	--bins mmtCatHigh mmtCatLow \
+	--bins mmt \
 	--verbose
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_1_7TeV.txt \
-	  --bins emtCatHigh emtCatLow \
-	--verbose
-	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_2_7TeV.txt \
-          --bins eetCatHigh eetCatLow \
+	  --bins emt \
 	  --verbose
 	# all done
 	touch $@
@@ -447,19 +405,10 @@ $(HTT_TEST)/root_postfit/.timestamp: $(HTT_TEST)/.fit_timestamp
 plots/.mass_timestamp: $(HTT_TEST)/root_postfit/.timestamp pas_plots.py
 	rm -rf plots
 	mkdir -p plots
-	#python pas_plots.py 
-	python pas_plots.py --prefit --period 7TeV --MLfit all
-	python pas_plots.py --prefit --period 8TeV --MLfit all
-	python pas_plots.py --prefit --period all --MLfit all
-	python pas_plots.py --period 7TeV --MLfit all
-	python pas_plots.py --period 8TeV --MLfit all
-	python pas_plots.py --period all --MLfit all
-	python pas_plots_channels.py --prefit --period 7TeV --MLfit all
-	python pas_plots_channels.py --prefit --period 8TeV --MLfit all
-	python pas_plots_channels.py --prefit --period all --MLfit all
-	python pas_plots_channels.py --period 7TeV --MLfit all
-	python pas_plots_channels.py --period 8TeV --MLfit all
-	python pas_plots_channels.py --period all --MLfit all
+	python VH_massplots.py --prefit --period 7TeV --MLfit all
+	python VH_massplots.py --prefit --period 8TeV --MLfit all
+	python VH_massplots.py --period 7TeV --MLfit all
+	python VH_massplots.py --period 8TeV --MLfit all
 	touch $@
 
 postfit: $(HTT_TEST)/root_postfit/.timestamp
@@ -524,41 +473,22 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_1_8TeV.txt \
 	  --bins emtCatHigh emtCatLow \
 	  --verbose
-	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_2_8TeV.txt \
-	  --bins eetCatHigh eetCatLow \
-	  --verbose
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_0_7TeV.txt \
-	--bins mmtCatHigh mmtCatLow \
+	--bins mmt \
 	--verbose
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_1_7TeV.txt \
-	  --bins emtCatHigh emtCatLow \
+	  --bins emt \
 	--verbose
-	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_2_7TeV.txt \
-	  --bins eetCatHigh eetCatLow \
-	  --verbose
-	#plot --max-likelihood ../HiggsAnalysis/HiggsToTauTau/python/layouts/max-likelihood_sm.py limits/vhtt_zh
-	#plot --max-likelihood ../HiggsAnalysis/HiggsToTauTau/python/layouts/max-likelihood_sm.py limits/vhtt_wh
-	#plot --max-likelihood ../HiggsAnalysis/HiggsToTauTau/python/layouts/max-likelihood_sm.py limits/vhtt_wh_had
-	#plot --max-likelihood ../HiggsAnalysis/HiggsToTauTau/python/layouts/max-likelihood_sm.py limits/cmb
-	#hadd -f fileBestFit.root *bestfit.root
 	# all done
 	touch $@
 
 plots/.mass_cat_timestamp: $(HTT_TEST)/root_postfit_zh/.cat_timestamp pas_plots.py
 	rm -rf plots
 	mkdir -p plots
-	python pas_plots.py --prefit --period 7TeV --MLfit channel
-	python pas_plots.py --prefit --period 8TeV --MLfit channel
-	python pas_plots.py --prefit --period all --MLfit channel
-	python pas_plots.py --period 7TeV --MLfit channel
-	python pas_plots.py --period 8TeV --MLfit channel 
-	python pas_plots.py --period all --MLfit channel
-	python pas_plots_channels.py --prefit --period 7TeV --MLfit channel
-	python pas_plots_channels.py --prefit --period 8TeV --MLfit channel
-	python pas_plots_channels.py --prefit --period all --MLfit channel
-	python pas_plots_channels.py --period 7TeV --MLfit channel
-	python pas_plots_channels.py --period 8TeV --MLfit channel 
-	python pas_plots_channels.py --period all --MLfit channel
+	python VH_massplots.py --prefit --period 7TeV --MLfit channel
+	python VH_massplots.py --prefit --period 8TeV --MLfit channel
+	python VH_massplots.py --period 7TeV --MLfit channel
+	python VH_massplots.py --period 8TeV --MLfit channel 
 	touch $@
 
 massplots_cat: plots/.mass_cat_timestamp
