@@ -40,7 +40,7 @@ std::string legendEntry(const std::string& channel){
   return title;
 }
 
-void compareBestFitVH(const char* filename="test.root", const char* channelstr="boost,vbf,vhtt,cmb+", const char* type="sm", double mass=125, double minimum=-4.5, double maximum=4.5, const char* label="Preliminary, #sqrt{s}=7-8 TeV, L = 24.7 fb^{-1}, VH #rightarrow V#tau #tau")
+void compareBestFitVH(const char* filename="BestFit.root", const char* channelstr="vhtt_zh,vhtt_wh,vhtt_wh_had,cmb", const char* type="sm", double mass=125, double minimum=-6.5, double maximum=6.5, const char* label="CMS, 4.9 fb^{-1} at 7 TeV, 19.7 fb^{-1} at 8 TeV")
 {
   SetStyle();
 
