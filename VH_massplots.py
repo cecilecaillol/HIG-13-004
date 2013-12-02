@@ -309,6 +309,8 @@ if __name__ == "__main__":
 
     # Get all our histograms
     histograms = {}
+    yield_errors = {}
+    yields = {}
 
     # Map LLT subplots to different category combinations
     all_llt_channels = ['emtCatLow', 'mmtCatLow',
@@ -343,44 +345,76 @@ if __name__ == "__main__":
         'lltt': ['eett_zh','mmtt_zh'],
     }
 
+    num_bins_llt=9
+    if args.period=="7TeV":
+	num_bins_llt=3
+    num_bins_zh=15
+    num_bins_ltt=20
+
     # LLT
     for lltsubset, channel_subset in llt_subplots.iteritems():
         llt_plots = {}
+	llt_erreurs={}
+	llt_integrales={}
+	yield_errors[lltsubset] = llt_erreurs
+	yields[lltsubset] = llt_integrales
         histograms[lltsubset] = llt_plots
         # only EMT has charge flip background
         channel_subset_flip = [x for x in channel_subset
                                if 'emt' in x]
-	print channel_subset_flip
 
         llt_plots['wz'] = get_combined_histogram(
             'wz', channel_subset, files_to_use_wh, title='WZ',
             style='wz'
         )
+	erreur=ROOT.Double(0)
+	integrale=llt_plots['wz'].IntegralAndError(1,num_bins_llt,erreur)
+	llt_integrales['wz']=float(integrale)
+	llt_erreurs['wz']=float(erreur)
+	#print integrale, erreur
         llt_plots['zz'] = get_combined_histogram(
             'zz', channel_subset, files_to_use_wh, title='ZZ',
             style='zz'
         )
+        integrale=llt_plots['zz'].IntegralAndError(1,num_bins_llt,erreur)
+        llt_integrales['zz']=float(integrale)
+        llt_erreurs['zz']=float(erreur)
         llt_plots['fakes'] = get_combined_histogram(
             'fakes', channel_subset, files_to_use_wh, title='Reducible bkg.',
             style='fakes'
         )
+        integrale=llt_plots['fakes'].IntegralAndError(1,num_bins_llt,erreur)
+        llt_integrales['fakes']=float(integrale)
+        llt_erreurs['fakes']=float(erreur)
         if channel_subset_flip:
             llt_plots['charge_fakes'] = get_combined_histogram(
                 'charge_fakes', channel_subset_flip, files_to_use_wh,
                 title='Reducible bkg. charge flip', style='charge_fakes'
             )
+            integrale=llt_plots['charge_fakes'].IntegralAndError(1,num_bins_llt,erreur)
+            llt_integrales['fakes']+=float(integrale)
         llt_plots['signal'] = get_combined_histogram(
             'WH125', channel_subset, files_to_use_wh,
             title='m_{H}=125 GeV', style='signal',
         )
+        integrale=llt_plots['signal'].IntegralAndError(1,num_bins_llt,erreur)
+        llt_integrales['signal']=float(integrale)
+        llt_erreurs['signal']=float(erreur)
+	print integrale, erreur
         llt_plots['hww'] = get_combined_histogram(
             'WH_hww125', channel_subset, files_to_use_wh,
             title='m_{H}=125 GeV', style='hww',
         )
+        integrale=llt_plots['hww'].IntegralAndError(1,num_bins_llt,erreur)
+        llt_integrales['hww']=float(integrale)
+        llt_erreurs['hww']=float(erreur)
         llt_plots['data'] = get_combined_histogram(
             'data_obs', channel_subset, files_to_use_wh,
             title='data', style='data'
         )
+        integrale=llt_plots['data'].IntegralAndError(1,num_bins_llt,erreur)
+        llt_integrales['data']=float(integrale)
+        llt_erreurs['data']=float(erreur)
         def make_legend():
             output = ROOT.TLegend(0.55, 0.65, 0.90, 0.90, "", "brNDC")
             output.SetLineWidth(0)
@@ -429,39 +463,57 @@ if __name__ == "__main__":
 
     # ZH
     histograms['zh'] = {}
+    yields['zh']={}
+    yield_errors['zh'] = {}
     zh_channels = [
         'eeem_zh', 'eeet_zh', 'eemt_zh', 'eett_zh',
         'mmme_zh', 'mmet_zh', 'mmmt_zh', 'mmtt_zh',
     ]
     for zhsubset, channel_subset in zh_subplots.iteritems():
         zh_plots = {}
+        zh_erreurs = {}
+	zh_integrales = {}
         histograms[zhsubset] = zh_plots
+	yields[zhsubset] = zh_integrales
+        yield_errors[zhsubset] = zh_erreurs
 
         zh_plots['zz'] = get_combined_histogram(
             ['ZZ', 'GGToZZ2L2L', 'TTZ'], channel_subset, files_to_use_zh, title='ZZ',
             style='zz'
         )
+        erreur=ROOT.Double(0)
+        integrale=zh_plots['zz'].IntegralAndError(1,num_bins_zh,erreur)
+        zh_integrales['zz']=float(integrale)
+        zh_erreurs['zz']=float(erreur)
 
         zh_plots['fakes'] = get_combined_histogram(
             'Zjets', channel_subset, files_to_use_zh, title='Reducible bkg.',
             style='fakes'
         )
-
+        integrale=zh_plots['fakes'].IntegralAndError(1,num_bins_zh,erreur)
+        zh_integrales['fakes']=float(integrale)
+        zh_erreurs['fakes']=float(erreur)
         zh_plots['hww'] = get_combined_histogram(
             'ZH_hww125', channel_subset, files_to_use_zh,
             title='m_{H}=125 GeV', style='hww',
         )
-
+        integrale=zh_plots['hww'].IntegralAndError(1,num_bins_zh,erreur)
+        zh_integrales['hww']=float(integrale)
+        zh_erreurs['hww']=float(erreur)
         zh_plots['signal'] = get_combined_histogram(
             'ZH_htt125', channel_subset, files_to_use_zh,
             title='m_{H}=125 GeV', style='signal',
         )
-
+        integrale=zh_plots['signal'].IntegralAndError(1,num_bins_zh,erreur)
+        zh_integrales['signal']=float(integrale)
+        zh_erreurs['signal']=float(erreur)
         zh_plots['data'] = get_combined_histogram(
             'data_obs', channel_subset, files_to_use_zh,
             title='data', style='data',
         )
-
+        integrale=zh_plots['data'].IntegralAndError(1,num_bins_zh,erreur)
+        zh_integrales['data']=float(integrale)
+        zh_erreurs['data']=float(erreur)
         zh_plots['stack'] = ROOT.THStack("zh_stack", "zh_stack")
         zh_plots['stack'].Add(zh_plots['fakes'], 'hist')
         zh_plots['stack'].Add(zh_plots['zz'], 'hist')
@@ -495,30 +547,46 @@ if __name__ == "__main__":
 
     for lttsubset, channel_subset in ltt_subplots.iteritems():
         ltt_plots = {}
+	ltt_integrales = {}
+	ltt_erreurs = {}
+	yields[lttsubset]=ltt_integrales
+	yield_errors[lttsubset]=ltt_erreurs
         histograms[lttsubset] = ltt_plots
 
         ltt_plots['wz'] = get_combined_histogram(
             'wz', channel_subset, files_to_use_wh_had, title='WZ',
             style='wz',
         )
-
+	erreur=ROOT.Double(0)
+        integrale=ltt_plots['wz'].IntegralAndError(1,num_bins_ltt,erreur)
+        ltt_integrales['wz']=float(integrale)
+        ltt_erreurs['wz']=float(erreur)
         ltt_plots['zz'] = get_combined_histogram(
             'zz', channel_subset, files_to_use_wh_had, title='ZZ',
             style='zz',)
-
+        integrale=ltt_plots['zz'].IntegralAndError(1,num_bins_ltt,erreur)
+        ltt_integrales['zz']=float(integrale)
+        ltt_erreurs['zz']=float(erreur)
         ltt_plots['fakes'] = get_combined_histogram(
             'fakes', channel_subset, files_to_use_wh_had, title='Reducible bkg.',
             style='fakes',
         )
-
+        integrale=ltt_plots['fakes'].IntegralAndError(1,num_bins_ltt,erreur)
+        ltt_integrales['fakes']=float(integrale)
+        ltt_erreurs['fakes']=float(erreur)
         ltt_plots['signal'] = get_combined_histogram(
             ['WH_htt125'], channel_subset, files_to_use_wh_had,
             title='m_{H}=125 GeV', style='signal')
-
+        integrale=ltt_plots['signal'].IntegralAndError(1,num_bins_ltt,erreur)
+        ltt_integrales['signal']=float(integrale)
+        ltt_erreurs['signal']=float(erreur)
+	print integrale, erreur
         ltt_plots['data'] = get_combined_histogram(
             'data_obs', channel_subset, files_to_use_wh_had,
             title='data', style='data')
-
+        integrale=ltt_plots['data'].IntegralAndError(1,num_bins_ltt,erreur)
+        ltt_integrales['data']=float(integrale)
+        ltt_erreurs['data']=float(erreur)
         ltt_plots['stack'] = ROOT.THStack("ltt_stack", "ltt_stack")
         ltt_plots['stack'].Add(ltt_plots['fakes'], "hist")
         ltt_plots['stack'].Add(ltt_plots['zz'], "hist")
@@ -603,7 +671,7 @@ if __name__ == "__main__":
 
     # Figure out what goes in the CMS preliminary line
     blurb_map = {
-        '7TeV': ('5.0', '7'),
+        '7TeV': ('4.9', '7'),
         '8TeV': ('19.7', '8'),
         'all': ('24.7', '7+8'),
     }
@@ -612,7 +680,7 @@ if __name__ == "__main__":
     canvas = MakeCanvas("asdf","asdf",800,800)
 
     for llt_key in llt_subplots:
-        print "Plotting: ", llt_key
+        #print "Plotting: ", llt_key
         histograms[llt_key]['stack'].Draw()
         if not args.prefit:
             histograms[llt_key]['error'].Draw("e2same")
@@ -660,5 +728,25 @@ if __name__ == "__main__":
         channel_text=text_channel(ltt_key)
         channel_text.Draw('same')
         canvas.SaveAs('plots/' + ltt_key + plot_suffix)
+
+    postfit="postfit"
+    if args.prefit:
+	postfit="prefit"
+    text_file=open("vh_table_yields_"+postfit+args.period+"_"+args.MLfit+".txt","w")
+    text_file.write('\\begin{tabular}{l | c | c | c} \n')
+    text_file.write('Process &$\\ell \\ell \\tau_h$& $\\ell\\tau_h\\tau_h$ & $\\ell\\ell LL$ \\\\ \n')
+    text_file.write('Fakes & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f & \multirow{2}{*}{%.2f $\\pm$ %.2f} \\\\ \n'%(yields['llt']['fakes'],yield_errors['llt']['fakes'],yields['ltt']['fakes'],yield_errors['ltt']['fakes'],yields['zh']['fakes'],yield_errors['zh']['fakes']))
+    text_file.write('WZ & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f & \\\\ \n'%(yields['llt']['wz'],yield_errors['llt']['wz'],yields['ltt']['wz'],yield_errors['ltt']['wz']))
+    text_file.write('\hline \n')
+    text_file.write('ZZ & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f \\\\ \n'%(yields['llt']['zz'],yield_errors['llt']['zz'],yields['ltt']['zz'],yield_errors['ltt']['zz'],yields['zh']['zz'],yield_errors['zh']['zz']))
+    text_file.write('\hline  \n')
+    text_file.write('\hline  \n')
+    text_file.write('Total bkg. & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f  & %.2f $\\pm$ %.2f  \\\\ \n '%((yields['llt']['zz']+yields['llt']['fakes']+yields['llt']['wz']),(yield_errors['llt']['zz']**2+yield_errors['llt']['wz']**2+yield_errors['llt']['fakes']**2)**0.5,(yields['ltt']['zz']+yields['ltt']['fakes']+yields['ltt']['wz']),((yield_errors['ltt']['fakes']**2+yield_errors['ltt']['zz']**2+yield_errors['ltt']['wz']**2)**0.5),(yields['zh']['zz']+yields['zh']['fakes']),((yield_errors['zh']['zz']**2+yield_errors['zh']['fakes']**2)**0.5)))
+    text_file.write('\hline  \n')
+    text_file.write('VH$\\to$V$\\tau\\tau (m_H=125\\GeV)$ & & %.2f & %.2f  & %.2f \\\\ \n'%(yields['llt']['signal'],yields['ltt']['signal'],yields['zh']['signal']))
+    text_file.write('VH$\\to$VWW $(m_H=125\\GeV)$ &  %.2f $\\pm$ %.2f & & %.2f $\\pm$ %.2f  \\\\ \n'%(yields['llt']['hww'],yield_errors['llt']['hww'],yields['zh']['hww'],yield_errors['zh']['hww']))
+    text_file.write('\hline \n')
+    text_file.write('Observed & %.0f $\\pm$ %.0f & %.0f $\\pm$ %.0f & %.0f $\\pm$ %.0f \\\\ \n'%(yields['llt']['data'],yield_errors['llt']['data'],yields['ltt']['data'],yield_errors['ltt']['data'],yields['zh']['data'],yield_errors['zh']['data']))
+    text_file.write('\end{tabular} \n')
 
 
