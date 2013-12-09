@@ -304,13 +304,13 @@ $(LIMITDIR)/.chan_plot_timestamp: $(LIMITDIR)/.chan_computed $(BASE)/HiggsAnalys
 	cd $(LIMITDIR) && plot --asymptotic $(BASE)/HiggsAnalysis/HiggsToTauTau/python/layouts/sm_vhtt_exp_layout.py cmb/
 	rm -f $(LIMITDIR)/limits_limit.root 
 	hadd $(LIMITDIR)/limits_limit.root $(LIMITDIR)/*h_limit.root $(LIMITDIR)/*t_limit.root $(LIMITDIR)/*m_limit.root $(LIMITDIR)/*b_limit.root $(LIMITDIR)/*d_limit.root
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "vhtt_wh_had,vhtt_zh,vhtt_wh,cmb", true, false, "sm-xsex", 0, 20, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "vhtt_wh_had,vhtt_zh,vhtt_wh,cmb", true, false, "sm-xsex", 0, 20, false,"CMS, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_ZH_WH.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "ett,mtt,vhtt_wh_had", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "ett,mtt,vhtt_wh_had", true, false, "sm-xsex", 0, 30, false,"CMS, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_wh_had.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "mmt,emt,vhtt_wh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "mmt,emt,vhtt_wh", true, false, "sm-xsex", 0, 30, false,"CMS, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_wh_lep.pdf
-	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "llem,llet,lltt,llmt,vhtt_zh", true, false, "sm-xsex", 0, 30, false,"CMS Preliminary, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
+	root -b -q 'compareVHlimits.C+("limits/limits_limit.root", "llem,llet,lltt,llmt,vhtt_zh", true, false, "sm-xsex", 0, 30, false,"CMS, 4.9 fb^{-1} at 7TeV, 19.7 fb^{-1} at 8TeV",false,true)'
 	mv singleLimits_expected_sm.pdf plots/compa_zh.pdf
 	touch $@
 
@@ -357,48 +357,48 @@ $(HTT_TEST)/root_postfit/.timestamp: $(HTT_TEST)/.fit_timestamp
 	# apply all the pulls to the shapes
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_3_8TeV.txt \
 	  --bins eeem_zh mmme_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_4_8TeV.txt \
 	  --bins eemt_zh mmmt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_5_8TeV.txt \
 	  --bins eeet_zh mmet_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_6_8TeV.txt \
 	  --bins eett_zh mmtt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_3_7TeV.txt \
           --bins eeem_zh mmme_zh \
-          --verbose
+          --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_4_7TeV.txt \
           --bins eemt_zh mmmt_zh \
-          --verbose
+          --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_5_7TeV.txt \
           --bins eeet_zh mmet_zh \
-          --verbose
+          --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_6_7TeV.txt \
           --bins eett_zh mmtt_zh \
-          --verbose
+          --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_7_8TeV.txt \
-	  --bins mtt --verbose
+	  --bins mtt --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_8_8TeV.txt \
-	  --bins ett --verbose
+	  --bins ett --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_7_7TeV.txt \
-	  --bins mtt --verbose
+	  --bins mtt --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_8_7TeV.txt \
-	  --bins ett --verbose
+	  --bins ett --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_0_8TeV.txt \
           --bins mmtCatHigh mmtCatLow \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_8TeV.root datacards/vhtt_1_8TeV.txt \
           --bins emtCatHigh emtCatLow \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_0_7TeV.txt \
 	--bins mmt \
-	--verbose
+	--verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit/vhtt.input_7TeV.root datacards/vhtt_1_7TeV.txt \
 	  --bins emt \
-	  --verbose
+--verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	# all done
 	touch $@
 
@@ -429,56 +429,56 @@ $(HTT_TEST)/root_postfit_zh/.cat_timestamp: $(LIMITDIR)/.timestamp
 	# apply all the pulls to the shapes
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_3_8TeV.txt \
 	  --bins eeem_zh mmme_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_4_8TeV.txt \
 	  --bins eemt_zh mmmt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_5_8TeV.txt \
 	  --bins eeet_zh mmet_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_8TeV.root datacards/vhtt_6_8TeV.txt \
 	  --bins eett_zh mmtt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_3_7TeV.txt \
 	  --bins eeem_zh mmme_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_4_7TeV.txt \
 	  --bins eemt_zh mmmt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_5_7TeV.txt \
 	  --bins eeet_zh mmet_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_zh/vhtt.input_7TeV.root datacards/vhtt_6_7TeV.txt \
 	  --bins eett_zh mmtt_zh \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	rm -fr $(HTT_TEST)/root_postfit_wh_had
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh_had/125 --rMin -7.0
 	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh_had
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh_had.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_7_8TeV.txt \
-	  --bins mtt --verbose
+	  --bins mtt --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_8TeV.root datacards/vhtt_8_8TeV.txt \
-	  --bins ett --verbose
+	  --bins ett --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_7_7TeV.txt \
-	  --bins mtt --verbose
+	  --bins mtt --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh_had/vhtt.input_7TeV.root datacards/vhtt_8_7TeV.txt \
-	  --bins ett --verbose
+	  --bins ett --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	rm -fr $(HTT_TEST)/root_postfit_wh
 	cd $(HTT_TEST) && ./mlfit_and_copy.py $(LIMITDIR)/vhtt_wh/125 --rMin -7.0
 	cp -r $(HTT_TEST)/root $(HTT_TEST)/root_postfit_wh
 	cp $(HTT_TEST)/fitresults/mlfit_sm.txt mlfit_wh.txt
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_0_8TeV.txt \
 	  --bins mmtCatHigh mmtCatLow \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_8TeV.root datacards/vhtt_1_8TeV.txt \
 	  --bins emtCatHigh emtCatLow \
-	  --verbose
+	  --verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_0_7TeV.txt \
 	--bins mmt \
-	--verbose
+	--verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	cd $(HTT_TEST) && ./postfit.py root_postfit_wh/vhtt.input_7TeV.root datacards/vhtt_1_7TeV.txt \
 	  --bins emt \
-	--verbose
+	--verbose --fitresults "mlfit_cmb_131203/out/mlfit.txt"
 	# all done
 	touch $@
 
