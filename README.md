@@ -32,6 +32,10 @@ cp -r HIG-13-004/mlfit_cmb_131203 HiggsAnalysis/HiggsToTauTau/test/.
 cp HIG-13-004/postfit_right_errors.py HiggsAnalysis/HiggsToTauTau/test/postfit.py
 ```
 
+To clean the directories from previous files and results:
+```shell
+sh clean.sh
+```
 
 Producing Results
 -----------------
