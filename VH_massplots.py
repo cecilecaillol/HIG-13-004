@@ -89,55 +89,55 @@ def text_channel(canal):
    chan.SetTextFont (   62 )
    texte=' '
    if canal=='emt_high':
-	 texte="#splitline{e + #mu#tau_{h}}{#mu + e#tau_{h}}   high LT"
+	 texte="#splitline{e + #mu#tau#lower[0.8]{#scale[0.7]{h}}}{#mu + e#tau#lower[0.8]{#scale[0.7]{h}}}   high #it{L}#lower[0.8]{#scale[0.7]{T}}"
    if canal=='emt_low':
-	 texte='#splitline{e + #mu#tau_{h}}{#mu + e#tau_{h}}   low LT'
+	 texte='#splitline{e + #mu#tau#lower[0.8]{#scale[0.7]{h}}}{#mu + e#tau#lower[0.8]{#scale[0.7]{h}}}   low #it{L}#lower[0.8]{#scale[0.7]{T}}'
    if canal=='mmt_high':
-	 texte='#mu + #mu#tau_{h} high LT'
+	 texte='#mu + #mu#tau#lower[0.8]{#scale[0.7]{h}} high #it{L}#lower[0.8]{#scale[0.7]{T}}'
    if canal=='mmt_low':
-	 texte='#mu + #mu#tau_{h} low LT'
+	 texte='#mu + #mu#tau#lower[0.8]{#scale[0.7]{h}} low #it{L}#lower[0.8]{#scale[0.7]{T}}'
    if canal=='emt':
-	 texte='#splitline{e + #mu#tau_{h}}{#mu + e#tau_{h}}'
+	 texte='#splitline{e + #mu#tau#lower[0.8]{#scale[0.7]{h}}}{#mu + e#tau#lower[0.8]{#scale[0.7]{h}}}'
    if canal=='mmt':
-	 texte='#mu + #mu#tau_{h}'
+	 texte='#mu + #mu#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='ett':
-	 texte='e + #tau_{h}#tau_{h}'
+	 texte='e + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='mtt':
-	 texte='#mu + #tau_{h}#tau_{h}'
+	 texte='#mu + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='llem':
-	 texte='ll + e#mu'
+	 texte='#it{l}#it{l} + e#mu'
    if canal=='llet':
-	 texte='ll + e#tau_{h}'
+	 texte='#it{l}#it{l} + e#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='llmt':
-	 texte='ll + #mu#tau_{h}'
+	 texte='#it{l}#it{l} + #mu#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='lltt':
-	 texte='ll + #tau_{h}#tau_{h}'
+	 texte='#it{l}#it{l} + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='mmem':
          texte='#mu#mu + e#mu'
    if canal=='mmet':
-         texte='#mu#mu + e#tau_{h}'
+         texte='#mu#mu + e#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='mmmt':
-         texte='#mu#mu + #mu#tau_{h}'
+         texte='#mu#mu + #mu#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='mmtt':
-         texte='#mu#mu + #tau_{h}#tau_{h}'
+         texte='#mu#mu + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='eeem':
          texte='ee + e#mu'
    if canal=='eeet':
-         texte='ee + e#tau_{h}'
+         texte='ee + e#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='eemt':
-         texte='ee + #mu#tau_{h}'
+         texte='ee + #mu#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='eett':
-         texte='ee + #tau_{h}#tau_{h}'
+         texte='ee + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='zh':
-	 texte='ll + LL\''
+	 texte='#it{l}#it{l} + #it{L}#it{L}\''
    if canal=='llt':
-	 texte='l + l\'#tau_{h}'
+	 texte='#it{l} + #it{l}\'#tau#lower[0.8]{#scale[0.7]{h}}'
    if canal=='llt_high':
-         texte='l + l\'#tau_{h} high LT'
+         texte='#it{l} + #it{l}\'#tau#lower[0.8]{#scale[0.7]{h}} high #it{L}#lower[0.8]{#scale[0.7]{T}}'
    if canal=='llt_low':
-         texte='l + l\'#tau_{h} low LT'
+         texte='#it{l} + #it{l}\'#tau#lower[0.8]{#scale[0.7]{h}} low #it{L}#lower[0.8]{#scale[0.7]{T}}'
    if canal=='ltt':
-	 texte='l + #tau_{h}#tau_{h}' 
+	 texte='#it{l} + #tau#lower[0.8]{#scale[0.7]{h}}#tau#lower[0.8]{#scale[0.7]{h}}' 
 
    chan.AddText(texte)
    return chan
@@ -756,6 +756,8 @@ if __name__ == "__main__":
            histograms[channel]['stack'].GetXaxis().SetTitle("#bf{m_{#tau#tau} [GeV]}")
         else:
            histograms[channel]['stack'].GetXaxis().SetTitle("#bf{m_{vis} [GeV]}")
+	if channel in ltt_subplots:
+	   histograms[channel]['stack'].GetXaxis().SetRangeUser(0,300)
 
 
     plot_suffix = "_%s_%s_%s.pdf" % (
@@ -850,6 +852,7 @@ if __name__ == "__main__":
         canvas.SaveAs('plots/' + zh_key + plot_suffix_png)
 
     for ltt_key in ltt_subplots:
+	#histograms[ltt_key]['stack'].GetXaxis().SetRange(0,300)
         histograms[ltt_key]['stack'].Draw()
         if args.prefit==False:
            histograms[ltt_key]['error'].Draw("e2same")
