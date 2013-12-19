@@ -26,8 +26,16 @@ then check out this package:
 git clone https://github.com/cecilecaillol/HIG-13-004.git
 ```
 
-and get the latest VH datacards:
+then copy the fit results from HTT+VHTT fit, and the corrected postfit.py:
+```shell
+cp -r HIG-13-004/mlfit_cmb_131203 HiggsAnalysis/HiggsToTauTau/test/.
+cp HIG-13-004/postfit_right_errors.py HiggsAnalysis/HiggsToTauTau/test/postfit.py
+```
 
+To clean the directories from previous files and results:
+```shell
+sh clean.sh
+```
 
 Producing Results
 -----------------
@@ -48,12 +56,12 @@ make limits
 # Plot the limits (they show up in limits/*pdf)
 make plotlimits
 
-# Compute all the significances (ZH, LLT, LTT, cmb)
+# Compute the combined significance
 make significance
-# Plot the significances (they show up in limits/*pdf)
+# Plot the significance (it shows up in limits/*pdf)
 make plotsignificances
 
-# Make vh_table.tex for the PAS
+# Make vh_table.tex for the PAS (Moriond style)
 make plots/vh_table.tex
 ```
 
